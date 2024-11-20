@@ -17,8 +17,8 @@ No requirements.
 | <a name="module_airflow_db"></a> [airflow\_db](#module\_airflow\_db) | ./modules/rds | n/a |
 | <a name="module_airflow_efs"></a> [airflow\_efs](#module\_airflow\_efs) | ./modules/airflow-efs | n/a |
 | <a name="module_db"></a> [db](#module\_db) | ./modules/rds | n/a |
-| <a name="module_deployment"></a> [deployment](#module\_deployment) | ../submodules/openmetadata-deployment | n/a |
-| <a name="module_openmetadata_deps"></a> [openmetadata\_deps](#module\_openmetadata\_deps) | ../submodules/openmetadata-dependencies | n/a |
+| <a name="module_deployment"></a> [deployment](#module\_deployment) | github.com/open-metadata/openmetadata-terraform//submodules/openmetadata-deployment | GEN-1521-aws-initial-version |
+| <a name="module_openmetadata_deps"></a> [openmetadata\_deps](#module\_openmetadata\_deps) | github.com/open-metadata/openmetadata-terraform//submodules/openmetadata-dependencies | GEN-1521-aws-initial-version |
 | <a name="module_opensearch"></a> [opensearch](#module\_opensearch) | ./modules/opensearch | n/a |
 
 ## Resources
