@@ -1,0 +1,66 @@
+## Requirements
+
+No requirements.
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
+| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | n/a |
+| <a name="provider_random"></a> [random](#provider\_random) | n/a |
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_airflow_db"></a> [airflow\_db](#module\_airflow\_db) | ./modules/rds | n/a |
+| <a name="module_airflow_efs"></a> [airflow\_efs](#module\_airflow\_efs) | ./modules/airflow-efs | n/a |
+| <a name="module_db"></a> [db](#module\_db) | ./modules/rds | n/a |
+| <a name="module_deployment"></a> [deployment](#module\_deployment) | ../submodules/openmetadata-deployment | n/a |
+| <a name="module_openmetadata_deps"></a> [openmetadata\_deps](#module\_openmetadata\_deps) | ../submodules/openmetadata-dependencies | n/a |
+| <a name="module_opensearch"></a> [opensearch](#module\_opensearch) | ./modules/opensearch | n/a |
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [kubernetes_secret_v1.airflow_auth](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret_v1) | resource |
+| [kubernetes_secret_v1.airflow_db_credentials](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret_v1) | resource |
+| [kubernetes_secret_v1.db_credentials](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/secret_v1) | resource |
+| [random_password.airflow_auth](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
+| [aws_eks_cluster.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/eks_cluster) | data source |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_airflow"></a> [airflow](#input\_airflow) | Airflow configuration. | <pre>object({<br/>    credentials = optional(object({   # Airflow credentials<br/>      password = optional(object({    # Password secret<br/>        secret_key = optional(string) # Secret key for the Airflow password<br/>        secret_ref = optional(string) # Secret reference for the Airflow password<br/>      }))<br/>      username = optional(string) # Username for Airflow<br/>    }))<br/>    db = optional(object({                         # Airflow's database configuration<br/>      aws = optional(object({                      # AWS specific configuration for the Airflow database<br/>        backup_retention_period = optional(number) # Number of days to retain database backups<br/>        backup_window           = optional(string) # Preferred backup window for RDS<br/>        identifier              = optional(string) # Unique identifier for the AWS RDS instance<br/>        instance_class          = optional(string) # Instance class of the AWS RDS instance<br/>        maintenance_window      = optional(string) # Preferred maintenance window for RDS<br/>        multi_az                = optional(bool)   # Whether to enable multi-AZ deployment<br/>      }))<br/>      credentials = optional(object({   # Airflow database credentials<br/>        password = optional(object({    # Password secret<br/>          secret_key = optional(string) # Secret key for the Airflow database password<br/>          secret_ref = optional(string) # Secret reference for the Airflow database password<br/>        }))<br/>        username = optional(string) # Username for the Airflow database<br/>      }))<br/>      db_name = optional(string)   # Name of the Airflow database<br/>      engine = optional(object({   # Airflow database engine configuration<br/>        name    = optional(string) # One of 'postgres' or 'mysql'<br/>        version = optional(string) # Version of the database engine<br/>      }))<br/>      host         = optional(string) # Database host address for Airflow<br/>      port         = optional(number) # Port on which the Airflow database is accessible<br/>      provisioner  = string           # One of 'helm', 'aws', or 'existing'<br/>      storage_size = optional(number) # Size of the Airflow database storage in GB<br/>    }))<br/>    endpoint    = optional(string) # Endpoint URL for the Airflow instance<br/>    provisioner = optional(string) # One of 'helm' or 'existing' <br/>    storage = optional(object({    # Airflow storage configuration<br/>      dags = optional(number)      # Size of storage allocated for DAGs (in GB)<br/>      logs = optional(number)      # Size of storage allocated for logs (in GB)<br/>    }))<br/>  })</pre> | <pre>{<br/>  "db": {<br/>    "provisioner": "helm"<br/>  },<br/>  "provisioner": "helm"<br/>}</pre> | no |
+| <a name="input_app_env_from"></a> [app\_env\_from](#input\_app\_env\_from) | List of environment variables to pass to the OpenMetadata application from the Kubernetes secrets. | `list(string)` | `[]` | no |
+| <a name="input_app_extra_envs"></a> [app\_extra\_envs](#input\_app\_extra\_envs) | Extra environment variables to pass to the OpenMetadata application. | `map(string)` | `{}` | no |
+| <a name="input_app_helm_chart_version"></a> [app\_helm\_chart\_version](#input\_app\_helm\_chart\_version) | Version of the OpenMetadata Helm chart to deploy. If not specified, the variable `app_version` will be used. | `string` | `null` | no |
+| <a name="input_app_namespace"></a> [app\_namespace](#input\_app\_namespace) | Namespace in which to deploy the OpenMetadata application. | `string` | `"openmetadata"` | no |
+| <a name="input_app_version"></a> [app\_version](#input\_app\_version) | Version of the OpenMetadata application to deploy. | `string` | `"1.5.7"` | no |
+| <a name="input_db"></a> [db](#input\_db) | OpenMetadata's database configuration. | <pre>object({<br/>    aws = optional(object({                      # AWS specific configuration for the database<br/>      backup_retention_period = optional(number) # Number of days to retain database backups<br/>      backup_window           = optional(string) # Preferred backup window for RDS<br/>      identifier              = optional(string) # Unique identifier for the AWS RDS instance<br/>      instance_class          = optional(string) # Instance class of the AWS RDS instance<br/>      maintenance_window      = optional(string) # Preferred maintenance window for RDS<br/>      multi_az                = optional(bool)   # Whether to enable multi-AZ deployment<br/>    }))<br/>    credentials = optional(object({   # Database credentials<br/>      password = optional(object({    # Password secret<br/>        secret_key = optional(string) # Secret key for the database password<br/>        secret_ref = optional(string) # Secret reference for the database password<br/>      }))<br/>      username = optional(string) # Username for the database<br/>    }))<br/>    db_name = optional(string)   # Name of the database<br/>    engine = optional(object({   # Database engine configuration<br/>      name    = optional(string) # One of 'postgres' or 'mysql'<br/>      version = optional(string) # Version of the database engine<br/>    }))<br/>    host         = optional(string) # Database host address<br/>    port         = optional(number) # Port on which the database is accessible<br/>    provisioner  = string           # One of 'helm', 'aws', or 'existing'<br/>    storage_size = optional(number) # Size of the database storage in GB<br/>  })</pre> | <pre>{<br/>  "provisioner": "helm"<br/>}</pre> | no |
+| <a name="input_docker_image_name"></a> [docker\_image\_name](#input\_docker\_image\_name) | Full path of the server Docker image name, excluding the tag. | `string` | `"docker.getcollate.io/openmetadata/server"` | no |
+| <a name="input_docker_image_tag"></a> [docker\_image\_tag](#input\_docker\_image\_tag) | Docker image tag for the server. If not specified, the variable `app_version` will be used. | `string` | `null` | no |
+| <a name="input_eks_cluster_name"></a> [eks\_cluster\_name](#input\_eks\_cluster\_name) | Name of the EKS cluster where OpenMetadata will be deployed. | `string` | n/a | yes |
+| <a name="input_eks_nodes_sg_ids"></a> [eks\_nodes\_sg\_ids](#input\_eks\_nodes\_sg\_ids) | List of security group IDs attached to the EKS nodes. Allows traffic from the OpenMetadata application to the databases. | `list(string)` | `[]` | no |
+| <a name="input_foo"></a> [foo](#input\_foo) | n/a | `string` | `"bar"` | no |
+| <a name="input_initial_admins"></a> [initial\_admins](#input\_initial\_admins) | List of initial admins to create in the OpenMetadata application, without the domain name. | `string` | `"[admin]"` | no |
+| <a name="input_kms_key_id"></a> [kms\_key\_id](#input\_kms\_key\_id) | ARN of the KMS key to encrypt database and backups. If not specified, your account's default KMS key will be used. | `string` | `null` | no |
+| <a name="input_opensearch"></a> [opensearch](#input\_opensearch) | Configuration for OpenSearch domain for OpenMetadata. | <pre>object({<br/>    aws = optional(object({                      # AWS specific configuration<br/>      availability_zone_count = optional(number) # Number of availability zones to deploy the OpenSearch domain<br/>      domain_name             = optional(string) # The OpenSearch domain name<br/>      engine_version          = optional(string) # OpenSearch engine version<br/>      instance_count          = optional(number) # Number of OpenSearch instances<br/>      instance_type           = optional(string) # OpenSearch instance type<br/>      tls_security_policy     = optional(string) # OpenSearch TLS security policy<br/>    }))<br/>    credentials = optional(object({<br/>      password = optional(object({    # Password secret<br/>        secret_ref = optional(string) # Secret reference for OpenSearch password<br/>        secret_key = optional(string) # Secret key for OpenSearch password<br/>      }))<br/>      username = optional(string) # OpenSearch username<br/>    }))<br/>    host          = optional(string) # OpenSearch host<br/>    port          = optional(string) # OpenSearch port, hardcoded to 443 if opensearch.provisioner is 'aws'<br/>    provisioner   = optional(string) # One of 'helm', 'aws', or 'existing'<br/>    scheme        = optional(string) # OpenSearch scheme, hardcoded to 'https' if opensearch.provisioner is 'aws'<br/>    storage_class = optional(string) # OpenSearch storage class<br/>    volume_size   = optional(number) # OpenSearch storage size  <br/>  })</pre> | <pre>{<br/>  "provisioner": "helm"<br/>}</pre> | no |
+| <a name="input_principal_domain"></a> [principal\_domain](#input\_principal\_domain) | Domain name of the users. For example, `open-metadata.org`. | `string` | `"open-metadata.org"` | no |
+| <a name="input_region"></a> [region](#input\_region) | AWS region name, for example, `us-east-2`. | `string` | n/a | yes |
+| <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | List of subnet IDs where the databases and OpenSearch will be deployed. The recommended configuration is to use private subnets. | `list(string)` | `[]` | no |
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | VPC ID for deploying the databases and OpenSearch. For example, `vpc-xxxxxxxx`. | `string` | n/a | yes |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_airflow_db_address"></a> [airflow\_db\_address](#output\_airflow\_db\_address) | n/a |
+| <a name="output_db_address"></a> [db\_address](#output\_db\_address) | n/a |
+| <a name="output_omd_deps_template"></a> [omd\_deps\_template](#output\_omd\_deps\_template) | n/a |
+| <a name="output_omd_template"></a> [omd\_template](#output\_omd\_template) | n/a |
+| <a name="output_opensearch_endpoint"></a> [opensearch\_endpoint](#output\_opensearch\_endpoint) | n/a |

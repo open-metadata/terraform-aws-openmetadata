@@ -1,0 +1,29 @@
+formatter: "markdown"
+
+version: ">= 0.16"
+
+recursive:
+  enabled: true
+  path: modules/
+  include-main: true
+
+output:
+  file: README_terraform.md
+  mode: replace
+  template: |-
+    {{ .Content }}
+
+sections:
+  show-all: false
+  show:
+    - data-sources
+    - inputs
+    - modules
+    - outputs
+    - providers
+    - requirements
+    - resources
+
+sort:
+  enabled: true
+  by: name
