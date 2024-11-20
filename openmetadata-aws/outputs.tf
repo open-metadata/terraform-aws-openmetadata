@@ -17,7 +17,3 @@ output "omd_template" {
 output "omd_deps_template" {
   value = module.openmetadata_deps.helm_template
 }
-
-output "pepe" {
-  value = local.omd_opensearch_host[local.opensearch_provisioner]
-}
