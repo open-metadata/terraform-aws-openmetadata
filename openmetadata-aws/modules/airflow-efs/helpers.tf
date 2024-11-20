@@ -1,6 +1,5 @@
 resource "kubernetes_job_v1" "efs_provision" {
   for_each = toset(var.enable_helpers ? ["this"] : [])
-  #for_each = toset(local.airflow_provisioner == "helm" ? ["this"] : [])
 
   metadata {
     name      = "efs-provision"
@@ -28,7 +27,6 @@ resource "kubernetes_job_v1" "efs_provision" {
           command = [
             "sh", "-c",
             "mkdir -p /efs/airflow-dags/$${DAGS_SUBPATH} /efs/airflow-logs/$${LOGS_SUBPATH}; chown -R 50000 /efs/airflow-dags/$${DAGS_SUBPATH} /efs/airflow-logs/$${LOGS_SUBPATH} && chmod -R a+rwx /efs/airflow-dags/$${DAGS_SUBPATH}"
-            #"mkdir -p /efs/airflow-dags/airflow-dags /efs/airflow-logs/airflow-logs; chown -R 50000 /efs/airflow-dags/airflow-dags /efs/airflow-logs/airflow-logs && chmod -R a+rwx /efs/airflow-dags/airflow-dags"
           ]
           volume_mount {
             name       = "airflow-dags"

@@ -17,10 +17,8 @@ openmetadata:
       principalDomain: ${omd.principal_domain}
     elasticsearch:
       enabled: true
-%{ if opensearch_provisioner == "existing" ~}
-      host: ${opensearch.host}
-%{ endif ~}
 %{ if opensearch_provisioner == "aws" || opensearch_provisioner == "existing" ~}
+      host: ${omd.opensearch_host}
       port: ${opensearch.port}
       scheme: ${opensearch.scheme}
       auth:

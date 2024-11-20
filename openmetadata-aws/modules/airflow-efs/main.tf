@@ -66,10 +66,8 @@ resource "kubernetes_persistent_volume_v1" "airflow" {
 
   metadata {
     name = var.airflow.pvc[each.key]
-    #name = "airflow-${each.key}"
     labels = {
       app = var.airflow.pvc[each.key]
-      #app = "airflow-${each.key}"
     }
   }
 
@@ -93,12 +91,10 @@ resource "kubernetes_persistent_volume_claim_v1" "airflow" {
   for_each = local.airflow_efs_instances
 
   metadata {
-    name = var.airflow.pvc[each.key]
-    #name      = "airflow-${each.key}"
+    name      = var.airflow.pvc[each.key]
     namespace = var.namespace
     labels = {
       app = var.airflow.pvc[each.key]
-      #app = "airflow-${each.key}"
     }
   }
   wait_until_bound = false

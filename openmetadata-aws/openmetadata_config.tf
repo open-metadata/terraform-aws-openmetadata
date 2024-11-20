@@ -8,8 +8,15 @@ locals {
     helm     = "mysql"
   }
 
+  omd_opensearch_host = {
+    existing = try(var.opensearch.host, null)
+    aws      = try(module.opensearch["this"].endpoint, null)
+    helm     = "opensearch"
+  }
+
   omd = merge(local.omd_config, {
-    db_host = local.omd_db_host[local.db_provisioner]
+    db_host         = local.omd_db_host[local.db_provisioner]
+    opensearch_host = local.omd_opensearch_host[local.opensearch_provisioner]
   })
 
   omd_template_vars = {
@@ -21,8 +28,4 @@ locals {
     db                     = local.db
     airflow                = local.airflow
   }
-
-  #  omd_template = [
-  #    templatefile("${path.module}/helm-dependencies/openmetadata_config.tftpl", local.omd_template_vars)
-  #  ]
 }

@@ -1,11 +1,11 @@
-output "opensearch_endpoint" {
+output "endpoint" {
   value = aws_opensearch_domain.opensearch.endpoint
 }
 
-output "opensearch_port" {
+output "port" {
   value = "443"
 }
 
-output "opensearch_scheme" {
+output "scheme" {
   value = "https"
 }

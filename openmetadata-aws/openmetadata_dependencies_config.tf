@@ -34,8 +34,4 @@ locals {
     mysql      = local.db
     opensearch = local.opensearch
   }
-
-  #  omd_dependencies_template = [
-  #    templatefile("${path.module}/helm-dependencies/openmetadata_dependencies_config.tftpl", local.omd_dependencies_template_vars)
-  #  ]
 }

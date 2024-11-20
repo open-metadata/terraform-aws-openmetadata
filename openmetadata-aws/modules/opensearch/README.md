@@ -41,6 +41,6 @@ No requirements.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_opensearch_endpoint"></a> [opensearch\_endpoint](#output\_opensearch\_endpoint) | n/a |
-| <a name="output_opensearch_port"></a> [opensearch\_port](#output\_opensearch\_port) | n/a |
-| <a name="output_opensearch_scheme"></a> [opensearch\_scheme](#output\_opensearch\_scheme) | n/a |
+| <a name="output_endpoint"></a> [endpoint](#output\_endpoint) | n/a |
+| <a name="output_port"></a> [port](#output\_port) | n/a |
+| <a name="output_scheme"></a> [scheme](#output\_scheme) | n/a |

@@ -63,3 +63,4 @@ No requirements.
 | <a name="output_omd_deps_template"></a> [omd\_deps\_template](#output\_omd\_deps\_template) | n/a |
 | <a name="output_omd_template"></a> [omd\_template](#output\_omd\_template) | n/a |
 | <a name="output_opensearch_endpoint"></a> [opensearch\_endpoint](#output\_opensearch\_endpoint) | n/a |
+| <a name="output_pepe"></a> [pepe](#output\_pepe) | n/a |

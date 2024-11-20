@@ -7,7 +7,7 @@ output "airflow_db_address" {
 }
 
 output "opensearch_endpoint" {
-  value = local.opensearch_provisioner == "aws" ? module.opensearch["this"].opensearch_endpoint : null
+  value = local.opensearch_provisioner == "aws" ? module.opensearch["this"].endpoint : null
 }
 
 output "omd_template" {
@@ -16,4 +16,8 @@ output "omd_template" {
 
 output "omd_deps_template" {
   value = module.openmetadata_deps.helm_template
+}
+
+output "pepe" {
+  value = local.omd_opensearch_host[local.opensearch_provisioner]
 }

@@ -1,41 +1,6 @@
 variable "airflow" {
   description = "Airflow configuration."
   type = object({
-    #    credentials = optional(object({   # Airflow credentials
-    #      password = optional(object({    # Password secret
-    #        secret_key = optional(string) # Secret key for the Airflow password
-    #        secret_ref = optional(string) # Secret reference for the Airflow password
-    #      }))
-    #      username = optional(string) # Username for Airflow
-    #    }))
-    #    db = optional(object({                         # Airflow's database configuration
-    #      aws = optional(object({                      # AWS specific configuration for the Airflow database
-    #        backup_retention_period = optional(number) # Number of days to retain database backups
-    #        backup_window           = optional(string) # Preferred backup window for RDS
-    #        identifier              = optional(string) # Unique identifier for the AWS RDS instance
-    #        instance_class          = optional(string) # Instance class of the AWS RDS instance
-    #        maintenance_window      = optional(string) # Preferred maintenance window for RDS
-    #        multi_az                = optional(bool)   # Whether to enable multi-AZ deployment
-    #      }))
-    #      credentials = optional(object({   # Airflow database credentials
-    #        password = optional(object({    # Password secret
-    #          secret_key = optional(string) # Secret key for the Airflow database password
-    #          secret_ref = optional(string) # Secret reference for the Airflow database password
-    #        }))
-    #        username = optional(string) # Username for the Airflow database
-    #      }))
-    #      db_name = optional(string)   # Name of the Airflow database
-    #      engine = optional(object({   # Airflow database engine configuration
-    #        name    = optional(string) # One of 'postgres' or 'mysql'
-    #        version = optional(string) # Version of the database engine
-    #      }))
-    #      host         = optional(string) # Database host address for Airflow
-    #      port         = optional(number) # Port on which the Airflow database is accessible
-    #      provisioner  = string           # One of 'helm', 'aws', or 'existing'
-    #      storage_size = optional(number) # Size of the Airflow database storage in GB
-    #    }))
-    #    endpoint    = optional(string) # Endpoint URL for the Airflow instance
-    #    provisioner = optional(string) # One of 'helm' or 'existing'
     pvc = object({
       dags = string
       logs = string
@@ -50,7 +15,6 @@ variable "airflow" {
     })
   })
 }
-
 
 variable "namespace" {
   type        = string

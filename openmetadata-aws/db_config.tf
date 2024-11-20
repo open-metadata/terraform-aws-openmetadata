@@ -11,7 +11,7 @@ locals {
       backup_retention_period = coalesce(try(var.db.aws.backup_retention_period, null), local.db_aws_defaults.aws.backup_retention_period)
     }
     engine = {
-      name    = coalesce(try(var.db.engine.name, null), local.db_aws_defaults.engine.name)
+      name    = local.db_aws_defaults.engine.name
       version = coalesce(try(var.db.engine_version, null), local.db_aws_defaults.engine.version)
     }
     port         = coalesce(try(var.db.port, null), local.db_aws_defaults.port)

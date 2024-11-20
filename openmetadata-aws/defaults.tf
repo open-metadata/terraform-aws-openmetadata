@@ -60,7 +60,7 @@ locals {
       backup_retention_period = 30
     }
     engine = {
-      name    = "postgres" # harcoded later, set here jfyi
+      name    = "postgres"
       version = "16"
     }
     port         = 5432
@@ -98,7 +98,7 @@ locals {
       backup_retention_period = 30
     }
     engine = {
-      name    = "postgres" # harcoded later, set here jfyi
+      name    = "postgres"
       version = "16"
     }
     port         = "5432"
