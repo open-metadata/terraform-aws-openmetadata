@@ -3,10 +3,7 @@ variable "app_helm_chart_version" {
   description = "Version of the OpenMetadata Helm chart to deploy. If not specified, the variable `app_version` will be used."
   default     = null
 }
-variable "foo" {
-  type = string
-  default = "bar"
-}
+
 variable "app_env_from" {
   type        = list(string)
   description = "List of environment variables to pass to the OpenMetadata application from the Kubernetes secrets."
