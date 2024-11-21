@@ -4,3 +4,12 @@ repos:
     hooks:
       - id: terraform-docs-go
         args: ["openmetadata-aws"]
+
+  - repo: local
+    hooks:
+      - id: terraform-fmt
+        name: terraform fmt
+        entry: terraform fmt -recursive
+        language: system
+        files: \.tf$
+
