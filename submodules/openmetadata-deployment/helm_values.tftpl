@@ -21,7 +21,7 @@ openmetadata:
       host: ${omd.opensearch_host}
       port: ${opensearch.port}
       scheme: ${opensearch.scheme}
-% if opensearch_credentials_enabled ~}
+%{ if opensearch_credentials_enabled ~}
       auth:
         enabled: true
         username: ${opensearch.credentials.username}
