@@ -41,6 +41,4 @@ No modules.
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_pvcs"></a> [pvcs](#output\_pvcs) | n/a |
+No outputs.

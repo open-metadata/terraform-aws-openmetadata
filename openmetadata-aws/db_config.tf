@@ -26,12 +26,12 @@ locals {
     }
   } : null
 
-  shared_db_helm_config = local.db_provisioner == "helm" ? {
+  shared_db_helm_config = local.db_provisioner == "helm" || local.airflow_db_provisioner == "helm" ? {
     engine = {
-      name = coalesce(try(var.db.engine.name, null), local.shared_db_helm_defaults.engine.name)
+      name = local.shared_db_helm_defaults.engine.name
     }
-    port         = coalesce(try(var.db.port, null), local.shared_db_helm_defaults.port)
-    storage_size = coalesce(try(var.db.storage_size, null), local.shared_db_helm_defaults.storage_size)
+    port         = local.shared_db_helm_defaults.port
+    storage_size = coalesce(try(var.db.storage_size, null), try(var.airflow.db.storage_size, null), local.shared_db_helm_defaults.storage_size)
   } : null
 
   db_existing_config = local.db_provisioner == "existing" ? var.db : null

@@ -159,7 +159,7 @@ variable "airflow" {
       storage_size = optional(number) # Size of the Airflow database storage in GB
     }))
     endpoint    = optional(string) # Endpoint URL for the Airflow instance
-    provisioner = optional(string) # One of 'helm' or 'existing' 
+    provisioner = optional(string) # One of 'helm' or 'existing'
     storage = optional(object({    # Airflow storage configuration
       dags = optional(number)      # Size of storage allocated for DAGs (in GB)
       logs = optional(number)      # Size of storage allocated for logs (in GB)
@@ -198,7 +198,7 @@ variable "opensearch" {
     provisioner   = optional(string) # One of 'helm', 'aws', or 'existing'
     scheme        = optional(string) # OpenSearch scheme, hardcoded to 'https' if opensearch.provisioner is 'aws'
     storage_class = optional(string) # OpenSearch storage class
-    volume_size   = optional(number) # OpenSearch storage size  
+    volume_size   = optional(number) # OpenSearch storage size in GB
   })
   default = {
     provisioner = "helm"

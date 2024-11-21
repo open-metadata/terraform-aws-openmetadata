@@ -99,7 +99,7 @@ resource "random_password" "opensearch_password" {
 resource "kubernetes_secret_v1" "opensearch_credentials" {
   metadata {
     name      = var.opensearch.credentials.password.secret_ref
-    namespace = var.app_namespace
+    namespace = var.namespace
   }
 
   data = {

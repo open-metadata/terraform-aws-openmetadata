@@ -1,6 +1,6 @@
 locals {
   airflow_db_provisioner = coalesce(try(var.airflow.db.provisioner, null), local.airflow_db_default_provisioner)
-
+  airflow_db_secrets     = toset(local.airflow_db_provisioner == "helm" ? ["this"] : [])
   airflow_db_aws_config = local.airflow_db_provisioner == "aws" ? {
     aws = {
       backup_retention_period = coalesce(try(var.airflow.db.aws.backup_retention_period, null), local.airflow_db_aws_defaults.aws.backup_retention_period)
@@ -29,7 +29,7 @@ locals {
   airflow_db_existing_config = local.airflow_db_provisioner == "existing" ? var.airflow.db : null
 
   airflow_db_config = {
-    helm     = local.shared_db_helm_defaults
+    helm     = local.shared_db_helm_config
     aws      = local.airflow_db_aws_config
     existing = local.airflow_db_existing_config
   }

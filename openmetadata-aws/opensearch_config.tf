@@ -1,5 +1,6 @@
 locals {
-  opensearch_provisioner = coalesce(try(var.opensearch.provisioner, null), local.opensearch_default_provisioner)
+  opensearch_provisioner         = coalesce(try(var.opensearch.provisioner, null), local.opensearch_default_provisioner)
+  opensearch_credentials_enabled = try(var.opensearch.credentials, null) != null ? true : false
 
   opensearch_aws_config = local.opensearch_provisioner == "aws" ? {
     aws = {

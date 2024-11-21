@@ -14,6 +14,11 @@ variable "kms_key_id" {
   default     = null
 }
 
+variable "namespace" {
+  type        = string
+  description = "Namespace to deploy the Kubernetes secret. Must be the OpenMetadata application's namespace."
+}
+
 variable "subnet_ids" {
   type        = list(string)
   description = "List of subnets IDs where the databases and OpenSearch will be deployed. The recommended configuration is to use private subnets."
@@ -22,11 +27,6 @@ variable "subnet_ids" {
 variable "vpc_id" {
   type        = string
   description = "VPC ID to deploy the databases and OpenSearch. For example: `vpc-xxxxxxxx`."
-}
-
-variable "app_namespace" {
-  type        = string
-  description = "Namespace to deploy the OpenMetadata application."
 }
 
 variable "opensearch" {
@@ -47,14 +47,6 @@ variable "opensearch" {
         secret_key = optional(string) # Secret key for OpenSearch password
       }))
     }))
-    host          = optional(string) # OpenSearch host
-    port          = optional(string) # OpenSearch port, hardcoded to 443 if opensearch.provisioner is 'aws'
-    provisioner   = optional(string) # One of 'helm', 'aws', or 'existing'
-    scheme        = optional(string) # OpenSearch scheme, hardcoded to 'https' if opensearch.provisioner is 'aws'
-    storage_class = optional(string) # OpenSearch storage class
-    volume_size   = optional(number) # OpenSearch storage size  
+    volume_size = optional(number) # OpenSearch storage size in GB
   })
-  default = {
-    provisioner = "helm"
-  }
 }

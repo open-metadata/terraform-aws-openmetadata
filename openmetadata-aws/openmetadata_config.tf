@@ -20,12 +20,13 @@ locals {
   })
 
   omd_template_vars = {
-    opensearch_provisioner = local.opensearch_provisioner
-    db_provisioner         = local.db_provisioner
-    db_engine              = local.db.engine.name
-    omd                    = local.omd
-    opensearch             = local.opensearch
-    db                     = local.db
-    airflow                = local.airflow
+    opensearch_provisioner         = local.opensearch_provisioner
+    opensearch_credentials_enabled = local.opensearch_credentials_enabled
+    db_provisioner                 = local.db_provisioner
+    db_engine                      = local.db.engine.name
+    omd                            = local.omd
+    opensearch                     = local.opensearch
+    db                             = local.db
+    airflow                        = local.airflow
   }
 }

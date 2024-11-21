@@ -2,7 +2,6 @@ locals {
   airflow_provisioner = coalesce(try(var.airflow.provisioner, null), local.airflow_default_provisioner)
 
   airflow_helm_config = local.airflow_provisioner == "helm" ? {
-
     credentials = {
       username = coalesce(try(var.airflow.credentials.username, null), local.airflow_helm_defaults.credentials.username)
       password = {

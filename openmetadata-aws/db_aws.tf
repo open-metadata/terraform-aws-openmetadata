@@ -1,9 +1,9 @@
 module "db" {
   source = "./modules/rds"
 
-  for_each = toset(local.opensearch_provisioner == "aws" ? ["this"] : [])
+  for_each = toset(local.db_provisioner == "aws" ? ["this"] : [])
 
-  app_namespace    = var.app_namespace
+  namespace        = var.app_namespace
   kms_key_id       = var.kms_key_id
   eks_cluster_name = var.eks_cluster_name
   eks_nodes_sg_ids = var.eks_nodes_sg_ids

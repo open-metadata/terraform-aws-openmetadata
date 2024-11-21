@@ -2,7 +2,7 @@ locals {
   omd_dependencies_config = {
     opensearch_storage_class_enabled = try(var.opensearch.storage_class, null) != null
     airflow_enabled                  = local.airflow_provisioner == "helm" ? true : false
-    mysql_enabled                    = local.db_provisioner == "helm" ? true : false
+    mysql_enabled                    = local.db_provisioner == "helm" || local.airflow_db_provisioner == "helm" ? true : false
     opensearch_enabled               = local.opensearch_provisioner == "helm" ? true : false
     opensearch_storage_class_enabled = try(var.opensearch.storage_class, null) != null ? true : false
   }
@@ -31,7 +31,7 @@ locals {
     omd_dependencies = local.omd_dependencies
 
     airflow    = local.airflow
-    mysql      = local.db
+    mysql      = local.shared_db_helm_config
     opensearch = local.opensearch
   }
 }

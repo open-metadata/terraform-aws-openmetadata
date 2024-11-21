@@ -76,7 +76,7 @@ resource "kubernetes_secret_v1" "db_credentials" {
 
   metadata {
     name      = var.db_config.credentials.password.secret_ref
-    namespace = var.app_namespace
+    namespace = var.namespace
   }
 
   data = {

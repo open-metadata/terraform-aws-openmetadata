@@ -25,7 +25,7 @@ resource "kubernetes_secret_v1" "airflow_auth" {
 }
 
 resource "kubernetes_secret_v1" "airflow_db_credentials" {
-  for_each = local.omd_db_secrets
+  for_each = local.airflow_db_secrets
 
   metadata {
     name      = "airflow-mysql-secrets"

@@ -1,8 +1,3 @@
-variable "app_namespace" {
-  type        = string
-  description = "Namespace to deploy the OpenMetadata application."
-}
-
 variable "eks_cluster_name" {
   type        = string
   description = "Name of the EKS cluster where OpenMetadata will be deployed."
@@ -17,6 +12,11 @@ variable "kms_key_id" {
   type        = string
   description = "The ARN of the KMS key to encrypt database and backups. Your account's default KMS key will be used if not specified."
   default     = null
+}
+
+variable "namespace" {
+  type        = string
+  description = "Namespace to deploy the Kubernetes secrets."
 }
 
 variable "subnet_ids" {
