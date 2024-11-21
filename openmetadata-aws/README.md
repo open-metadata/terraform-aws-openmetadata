@@ -207,3 +207,56 @@ module "omd" {
   app_env_from = ["my-other-secret-1", "my-other-secret-2"]
 }
 ```
+
+# Development
+
+## pre-commit
+
+You can use [pre-commit](https://pre-commit.com/) to run checks on the code before committing. Checks are defined in the `.pre-commit-config.yaml` file and currently include:
+
+ - terraform docs
+ - terraform fmt
+
+To install the pre-commit hooks, run:
+
+```bash
+devops@collate:~/projects/collate/openmetadata-terraform/openmetadata-aws$ pre-commit install
+pre-commit installed at .git/hooks/pre-commit
+```
+
+Then the checks will run automatically before each commit. If any check fails, the commit will be aborted and you will need to fix the issues before committing again:
+
+```bash
+devops@collate:~/projects/collate/openmetadata-terraform/openmetadata-aws$ git add variables.tf 
+devops@collate:~/projects/collate/openmetadata-terraform/openmetadata-aws$ git commit -m "GEN-1521 test pre-commit"
+[WARNING] Unstaged files detected.
+[INFO] Stashing unstaged files to /home/devops/.cache/pre-commit/patch1732213728-159233.
+terraform-docs...........................................................Passed
+terraform fmt............................................................Failed
+- hook id: terraform-fmt
+- files were modified by this hook
+
+openmetadata-aws/variables.tf
+
+[INFO] Restored changes from /home/devops/.cache/pre-commit/patch1732213728-159233.
+devops@collate:~/projects/collate/openmetadata-terraform/openmetadata-aws$ git status -sb
+## GEN-1521-aws-initial-version...origin/GEN-1521-aws-initial-version [ahead 1]
+MM variables.tf
+devops@collate:~/projects/collate/openmetadata-terraform/openmetadata-aws$ git diff variables.tf
+diff --git a/openmetadata-aws/variables.tf b/openmetadata-aws/variables.tf
+index ee4af93..a3e3f57 100644
+--- a/openmetadata-aws/variables.tf
++++ b/openmetadata-aws/variables.tf
+@@ -1,5 +1,5 @@
+ variable "app_helm_chart_version" {
+-  type      = string
++  type        = string
+   description = "Version of the OpenMetadata Helm chart to deploy. If not specified, the variable `app_version` will be used."
+   default     = null
+ }
+```
+
+
+
+
+
