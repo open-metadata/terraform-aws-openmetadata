@@ -21,12 +21,14 @@ openmetadata:
       host: ${omd.opensearch_host}
       port: ${opensearch.port}
       scheme: ${opensearch.scheme}
+% if opensearch_credentials_enabled ~}
       auth:
         enabled: true
         username: ${opensearch.credentials.username}
         password:
           secretRef: ${opensearch.credentials.password.secret_ref}
           secretKey: ${opensearch.credentials.password.secret_key}
+%{ endif ~}
 %{ endif ~}
 %{ if db_provisioner == "aws" || db_provisioner == "existing" ~}
     database:
