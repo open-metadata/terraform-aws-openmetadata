@@ -6,13 +6,13 @@ variable "app_helm_chart_version" {
 
 variable "app_env_from" {
   type        = list(string)
-  description = "List of environment variables to pass to the OpenMetadata application from the Kubernetes secrets."
+  description = "List of Kubernetes secrets. Will be converted to environment variables for the OpenMetadata application."
   default     = []
 }
 
 variable "app_extra_envs" {
   type        = map(string)
-  description = "Extra environment variables to pass to the OpenMetadata application."
+  description = "Extra environment variables for the OpenMetadata application."
   default     = {}
 }
 
@@ -40,11 +40,6 @@ variable "docker_image_tag" {
   description = "Docker image tag for the server. If not specified, the variable `app_version` will be used."
 }
 
-variable "eks_cluster_name" {
-  type        = string
-  description = "Name of the EKS cluster where OpenMetadata will be deployed."
-}
-
 variable "eks_nodes_sg_ids" {
   type        = list(string)
   description = "List of security group IDs attached to the EKS nodes. Allows traffic from the OpenMetadata application to the databases."
@@ -69,11 +64,6 @@ variable "principal_domain" {
   default     = "open-metadata.org"
 }
 
-variable "region" {
-  type        = string
-  description = "AWS region name, for example, `us-east-2`."
-}
-
 variable "subnet_ids" {
   type        = list(string)
   description = "List of subnet IDs where the databases and OpenSearch will be deployed. The recommended configuration is to use private subnets."
@@ -83,6 +73,7 @@ variable "subnet_ids" {
 variable "vpc_id" {
   type        = string
   description = "VPC ID for deploying the databases and OpenSearch. For example, `vpc-xxxxxxxx`."
+  default     = null
 }
 
 # OpenMetadata database configuration

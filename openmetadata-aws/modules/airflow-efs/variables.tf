@@ -21,16 +21,6 @@ variable "namespace" {
   description = "Namespace to deploy the resources."
 }
 
-variable "eks_cluster_name" {
-  type        = string
-  description = "Name of the EKS cluster where OpenMetadata will be deployed."
-}
-
-variable "eks_nodes_sg_ids" {
-  type        = list(string)
-  description = "List of security group IDs attached to the EKS nodes. Used to allow traffic from the OpenMetadata application to the databases."
-}
-
 variable "enable_helpers" {
   type        = bool
   description = "Enable the Kubernetes job that will crete the initial folders on the EFS instances."

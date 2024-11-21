@@ -85,10 +85,6 @@ locals {
     storage_size = 50
   }
 
-  db_existing_defaults = {
-    port = "5432"
-  }
-
   airflow_db_aws_defaults = {
     aws = {
       identifier              = "airflow"
@@ -113,10 +109,6 @@ locals {
       }
     }
   }
-  airflow_db_existing_defaults = {
-    port = "5432"
-  }
-
 
   airflow_helm_defaults = {
     endpoint = "http://openmetadata-deps-web.${var.app_namespace}.svc:8080"
@@ -139,9 +131,5 @@ locals {
       logs = "airflow-logs"
       dags = "airflow-dags"
     }
-  }
-
-  airflow_existing_defaults = {
-    port = "8080"
   }
 }

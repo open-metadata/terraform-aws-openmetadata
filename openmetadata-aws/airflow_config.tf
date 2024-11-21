@@ -25,10 +25,7 @@ locals {
     }
   } : null
 
-  airflow_existing_config = local.airflow_provisioner == "existing" ? {
-    credentials = var.airflow.credentials
-    endpoint    = var.airflow.endpoint
-  } : null
+  airflow_existing_config = local.airflow_provisioner == "existing" ? var.airflow : null
 
   airflow_config = {
     helm     = local.airflow_helm_config
