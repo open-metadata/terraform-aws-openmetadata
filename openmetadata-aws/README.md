@@ -157,7 +157,7 @@ module "omd" {
 }
 ```
 
-## Add extra environment variables
+## Adding extra environment variables
 
 You can add extra environment variables to the OpenMetadata pod by using the parameter `app_extra_envs`:
 
