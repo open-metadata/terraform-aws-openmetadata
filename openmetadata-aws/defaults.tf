@@ -17,8 +17,8 @@ locals {
     initial_admins     = var.initial_admins
     principal_domain   = var.principal_domain
     image_pull_policy  = "IfNotPresent"
-    env_from           = var.app_env_from
-    extra_envs         = var.app_extra_envs
+    env_from           = var.env_from
+    extra_envs         = var.extra_envs
   }
 
   opensearch_aws_defaults = {
@@ -98,9 +98,9 @@ locals {
       name    = "postgres"
       version = "16"
     }
-    port         = "5432"
+    port         = 5432
     db_name      = "airflow"
-    storage_size = 10
+    storage_size = 20
     credentials = {
       username = "dbadmin"
       password = {

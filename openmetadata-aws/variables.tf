@@ -4,18 +4,6 @@ variable "app_helm_chart_version" {
   default     = null
 }
 
-variable "app_env_from" {
-  type        = list(string)
-  description = "List of Kubernetes secrets. Will be converted to environment variables for the OpenMetadata application."
-  default     = []
-}
-
-variable "app_extra_envs" {
-  type        = map(string)
-  description = "Extra environment variables for the OpenMetadata application."
-  default     = {}
-}
-
 variable "app_namespace" {
   type        = string
   default     = "openmetadata"
@@ -24,8 +12,8 @@ variable "app_namespace" {
 
 variable "app_version" {
   type        = string
-  description = "Version of the OpenMetadata application to deploy."
-  default     = "1.5.7"
+  description = "OpenMetadata version to deploy."
+  default     = "1.5.12"
 }
 
 variable "docker_image_name" {
@@ -44,6 +32,18 @@ variable "eks_nodes_sg_ids" {
   type        = list(string)
   description = "List of security group IDs attached to the EKS nodes. Allows traffic from the OpenMetadata application to the databases."
   default     = []
+}
+
+variable "env_from" {
+  type        = list(string)
+  description = "List of Kubernetes secrets. Will be converted to environment variables for the OpenMetadata application."
+  default     = []
+}
+
+variable "extra_envs" {
+  type        = map(string)
+  description = "Extra environment variables for the OpenMetadata application."
+  default     = {}
 }
 
 variable "initial_admins" {

@@ -56,14 +56,15 @@ image:
 %{ if length(omd.env_from) > 0 ~}
 envFrom:
 %{ for secret in omd.env_from ~}
-  - secretRef: ${secret}
+  - secretRef:
+      name: ${secret}
 %{ endfor ~}
 %{ endif ~}
 %{ if length(omd.extra_envs) > 0 ~}
 extraEnvs:
 %{ for key,value in omd.extra_envs ~}
   - name: ${key}
-    value: ${value}
+    value: "${value}"
 %{ endfor ~}
 %{ endif ~}
 resources:

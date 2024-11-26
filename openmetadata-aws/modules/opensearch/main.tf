@@ -13,7 +13,6 @@ data "aws_iam_policy_document" "opensearch" {
 }
 
 resource "aws_opensearch_domain" "opensearch" {
-
   domain_name    = var.opensearch.aws.domain_name
   engine_version = var.opensearch.aws.engine_version
 
