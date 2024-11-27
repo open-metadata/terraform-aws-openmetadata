@@ -39,13 +39,13 @@ module "omd" {
   # Version of OpenMetadata to deploy
   app_version      = "1.6"
 
-  # ARN of the KMS key used to encrypt the EFS instances
+  # ARN of the KMS key used to encrypt the EFS volumes
   kms_key_id       = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
 
   # Subnet IDs, used for the Airflow's EFS mount targets and EFS security group
   subnet_ids       = ["subnet-1a2b3c4d", "subnet-5e6f7g8h", "subnet-9i0j1k2l"]
 
-  # VPC ID for the security groups of the EFS instances
+  # VPC ID for the security groups of the EFS volumes
   vpc_id = "vpc-1a2b3c4d"
 
 }
@@ -65,19 +65,19 @@ module "omd" {
   # Version of OpenMetadata to deploy
   app_version  = "1.6"
 
-  # Security group IDs assigned to the EKS nodes, the security groups of the RDS instances and OpenSearch domain will allow inbound traffic from them
+  # Security group IDs assigned to the EKS nodes, the RDS instances, EFS volumes, and OpenSearch domain will allow inbound traffic from them
   eks_nodes_sg_ids = ["sg-1234abcd5678efgh", "sg-8765ijkl4321mnop"]
 
   # ARN of the KMS key used to encrypt resources 
   kms_key_id = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
 
   # Subnet IDs, used for:
-  # the Airflow's EFS mount targets and EFS security group
+  # the Airflow's EFS mount targets
   # the subnet group for the RDS instances
   # the OpenSearch domain
   subnet_ids = ["subnet-1a2b3c4d", "subnet-5e6f7g8h", "subnet-9i0j1k2l"]
 
-  # VPC ID for the security groups of the EFS instances, the RDS instances, and the OpenSearch domain
+  # VPC ID for the security groups of the EFS volumes, the RDS instances, and the OpenSearch domain
   vpc_id = "vpc-1a2b3c4d"
 
   # OpenMetadata database settings
@@ -159,7 +159,7 @@ module "omd" {
 
 ## Adding extra environment variables
 
-You can add extra environment variables to the OpenMetadata pod by using the parameter `app_extra_envs`:
+You can add extra environment variables to the OpenMetadata pod by using the parameter `extra_envs`:
 
 ```hcl
 module "omd" {
@@ -174,18 +174,18 @@ module "omd" {
   # Subnet IDs, used for the Airflow's EFS mount targets and EFS security group
   subnet_ids       = ["subnet-1a2b3c4d", "subnet-5e6f7g8h", "subnet-9i0j1k2l"]
 
-  # VPC ID for the security groups of the EFS instances
+  # VPC ID for the security groups of the EFS volumes
   vpc_id = "vpc-1a2b3c4d"
 
   # Extra environment variables for the OpenMetadata pod
-  app_extra_envs = {
+  extra_envs = {
     "VAR_1" = "foo"
     "VAR_2" = "bar"
   }
 }
 ```
 
-You can also add extra environment variables from Kubernetes secrets by using the parameter `app_env_from`:
+You can also add extra environment variables from Kubernetes secrets by using the parameter `env_from`:
 
 ```hcl
 module "omd" {
@@ -200,11 +200,11 @@ module "omd" {
   # Subnet IDs, used for the Airflow's EFS mount targets and EFS security group
   subnet_ids       = ["subnet-1a2b3c4d", "subnet-5e6f7g8h", "subnet-9i0j1k2l"]
 
-  # VPC ID for the security groups of the EFS instances
+  # VPC ID for the security groups of the EFS volumes
   vpc_id = "vpc-1a2b3c4d"
 
   # Extra environment variables for the OpenMetadata pod from Kubernetes secrets
-  app_env_from = ["my-other-secret-1", "my-other-secret-2"]
+  env_from = ["my-other-secret-1", "my-other-secret-2"]
 }
 ```
 
@@ -214,7 +214,7 @@ module "omd" {
 
 You can use [pre-commit](https://pre-commit.com/) to run checks on the code before committing. Checks are defined in the `.pre-commit-config.yaml` file and currently include:
 
- - terraform docs
+ - terraform-docs
  - terraform fmt
 
 To install the pre-commit hooks, run:
@@ -255,8 +255,3 @@ index ee4af93..a3e3f57 100644
    default     = null
  }
 ```
-
-
-
-
-
