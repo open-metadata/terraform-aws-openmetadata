@@ -43,9 +43,8 @@ module "rds" {
   create_db_subnet_group = true
   subnet_ids             = var.subnet_ids
 
-  skip_final_snapshot = true
-  deletion_protection = false
-  #deletion_protection = true
+  skip_final_snapshot = false
+  deletion_protection = true
 
   parameter_group_name      = var.db_config.aws.identifier
   create_db_parameter_group = true
