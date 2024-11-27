@@ -40,6 +40,6 @@ No requirements.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_endpoint"></a> [endpoint](#output\_endpoint) | n/a |
-| <a name="output_port"></a> [port](#output\_port) | n/a |
-| <a name="output_scheme"></a> [scheme](#output\_scheme) | n/a |
+| <a name="output_endpoint"></a> [endpoint](#output\_endpoint) | The endpoint of the OpenSearch domain |
+| <a name="output_port"></a> [port](#output\_port) | The port of the OpenSearch domain. Hardcoded to 443 |
+| <a name="output_scheme"></a> [scheme](#output\_scheme) | The scheme of the OpenSearch domain. Hardcoded to https |
