@@ -56,7 +56,7 @@ module "sg_db" {
   version = "~>5.2"
 
   name               = "${var.db_config.aws.identifier}-db"
-  description        = "Security group for OpenMetadata db"
+  description        = "Security group for the ${var.db_config.aws.identifier} RDS instance"
   vpc_id             = var.vpc_id
   egress_cidr_blocks = ["0.0.0.0/0"]
   egress_rules       = ["all-all"]
