@@ -212,8 +212,6 @@ module "omd" {
 
 This section explains how to access **Airflow** and **OpenMetadata** running in your Kubernetes cluster using port forwarding.
 
----
-
 ## Accessing Airflow
 
 Airflow is exposed via the `openmetadata-deps-web` service. To access it, follow these steps:
@@ -231,8 +229,6 @@ Airflow is exposed via the `openmetadata-deps-web` service. To access it, follow
     ```
 
 3. You should now see the Airflow interface.
-
----
 
 ## Accessing OpenMetadata
 
@@ -252,15 +248,12 @@ OpenMetadata is exposed via the `openmetadata` service. To access it, follow the
 
 3. You should now see the OpenMetadata interface.
 
----
-
 ## Notes
 
 - Ensure that the required services (`openmetadata-deps-web` and `openmetadata`) are active.
 - The `kubectl port-forward` command maps a local port on your machine to the service's port in the Kubernetes cluster. This allows you to access the service as though it were running locally.
 - If a service is already running on your machine using one of the ports in the examples, you can modify the local port (the first number in the mapping, e.g., 8585:8585) to an available port of your choice.
 - Keep the terminal session with the `kubectl port-forward` command open while you are accessing the services.
-
 
 # Development
 
