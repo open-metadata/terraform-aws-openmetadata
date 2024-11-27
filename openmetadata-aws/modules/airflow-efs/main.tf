@@ -1,17 +1,48 @@
 locals {
-  airflow_efs_instances            = var.airflow.storage
-  airflow_efs_create_mount_targets = { for pair in local.efs_mount_targets.map : "${pair.instance}/${pair.subnet_id}" => pair }
-  subnets_cidr_blocks              = [for subnet in var.subnet_ids : data.aws_subnet.this[subnet].cidr_block]
+  airflow_efs_instances = var.airflow.storage
 
-  efs_mount_targets = {
-    map = flatten([
-      for instance, size in local.airflow_efs_instances : [
-        for subnet_id in var.subnet_ids : {
+  # Map to combine EFS instances with subnets to ease the creation of mount targets
+  # e.g.
+  #
+  #flattened_instance_subnet_map = {
+  #  "dags/subnet_1" = {
+  #      instance  = "dags"
+  #      subnet_id = "subnet-abc123def456ghi78"
+  #  }
+  #  "dags/subnet_2" = {
+  #      instance  = "dags"
+  #      subnet_id = "subnet-def456ghi78jkl901"
+  #  }
+  #  "dags/subnet_3" = {
+  #      instance  = "dags"
+  #      subnet_id = "subnet-ghi78jkl901mno234"
+  #  }
+  #  "logs/subnet_1" = {
+  #      instance  = "logs"
+  #      subnet_id = "subnet-abc123def456ghi78"
+  #  }
+  #  "logs/subnet_2" = {
+  #      instance  = "logs"
+  #      subnet_id = "subnet-def456ghi78jkl901"
+  #  }
+  #  "logs/subnet_3" = {
+  #      instance  = "logs"
+  #      subnet_id = "subnet-ghi78jkl901mno234"
+  #  }
+  #}
+  flattened_instance_subnet_map = {
+    for combination in flatten([
+      for instance, _ in local.airflow_efs_instances : [
+        for idx, subnet_id in var.subnet_ids : {
+          key       = "${instance}/subnet_${idx + 1}"
           instance  = instance
           subnet_id = subnet_id
         }
       ]
-    ])
+      ]) : combination.key => {
+      instance  = combination.instance
+      subnet_id = combination.subnet_id
+    }
   }
 }
 
@@ -23,25 +54,31 @@ resource "aws_efs_file_system" "airflow" {
   kms_key_id     = var.kms_key_id
 }
 
-resource "aws_security_group" "airflow_efs" {
+module "sg_efs" {
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "~>5.2"
+
   name        = "airflow-efs"
-  description = "Allow inbound NFS traffic from the provided subnets."
+  description = "Allow inbound NFS traffic from EKS nodes"
   vpc_id      = var.vpc_id
 
-  ingress {
-    cidr_blocks = local.subnets_cidr_blocks
-    from_port   = 2049
-    to_port     = 2049
-    protocol    = "tcp"
-  }
+  ingress_with_source_security_group_id = [for sg_id in var.eks_nodes_sg_ids :
+    {
+      from_port                = 2049
+      to_port                  = 2049
+      protocol                 = "tcp"
+      description              = "NFS from ${sg_id}"
+      source_security_group_id = sg_id
+    }
+  ]
 }
 
 resource "aws_efs_mount_target" "airflow" {
-  for_each = local.airflow_efs_create_mount_targets
+  for_each = local.flattened_instance_subnet_map
 
   file_system_id  = aws_efs_file_system.airflow[each.value.instance].id
   subnet_id       = each.value.subnet_id
-  security_groups = [aws_security_group.airflow_efs.id]
+  security_groups = [module.sg_efs.security_group_id]
 }
 
 resource "kubernetes_storage_class_v1" "airflow_efs" {

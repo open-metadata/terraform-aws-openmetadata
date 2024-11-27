@@ -16,6 +16,11 @@ variable "airflow" {
   })
 }
 
+variable "eks_nodes_sg_ids" {
+  type        = list(string)
+  description = "List of security group IDs attached to the EKS nodes. Allows traffic from them to the EFS instances."
+}
+
 variable "namespace" {
   type        = string
   description = "Namespace to deploy the resources."
