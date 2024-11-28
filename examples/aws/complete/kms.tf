@@ -27,7 +27,6 @@ resource "aws_kms_key_policy" "this" {
         Effect = "Allow"
         Principal = {
           AWS = "*"
-          #AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/*"
         },
         Action   = "kms:*"
         Resource = "*"
