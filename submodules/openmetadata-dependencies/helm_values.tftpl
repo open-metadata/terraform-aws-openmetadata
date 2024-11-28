@@ -1,0 +1,66 @@
+# Settings for OpenMetadata dependencies.
+# Find more details: https://github.com/open-metadata/openmetadata-helm-charts/blob/main/charts/deps/values.yaml
+
+# MySQL settings
+# Find more details: https://artifacthub.io/packages/helm/bitnami/mysql
+mysql:
+  enabled: ${mysql_enabled}
+%{ if mysql_enabled ~}
+  primary:
+    persistence:
+      size: ${mysql.storage_size}Gi
+%{ endif ~}
+
+# OpenSearch settings
+# Find more details: https://github.com/opensearch-project/helm-charts/tree/opensearch-2.12.1/charts/opensearch
+opensearch:
+  enabled: ${opensearch_enabled}
+%{ if opensearch_provisioner == "helm" ~}
+  persistence:
+    size: ${opensearch.volume_size}Gi
+%{ endif ~}
+%{ if opensearch_storage_class_enabled ~}
+    storageClass: ${opensearch.storage_class}
+%{ endif ~}
+
+# Airflow settings
+# Find more details: https://github.com/airflow-helm/charts/tree/main/charts/airflow    
+airflow:
+  enabled: ${airflow_enabled}
+%{ if airflow_enabled ~}
+  airflow:
+    users:
+      - username: ${airflow.credentials.username}
+        password: $${ADMIN_PASSWORD}
+        role: Admin
+        email: spiderman@superhero.org
+        firstName: Peter
+        lastName: Parker
+    usersTemplates:
+        ADMIN_PASSWORD:
+          kind: secret
+          name: ${airflow.credentials.password.secret_ref}
+          key: ${airflow.credentials.password.secret_key}
+%{ if airflow_db_provisioner == "aws" || airflow_db_provisioner == "existing" ~}
+  externalDatabase:
+    passwordSecret: ${airflow.db.credentials.password.secret_ref}
+    passwordSecretKey: ${airflow.db.credentials.password.secret_key}
+    user: ${airflow.db.credentials.username}
+    type: ${airflow.db.engine.name}
+    host: ${omd_dependencies.airflow_db_host}
+    port: ${airflow.db.port}
+    database: ${airflow.db.db_name}
+%{ endif ~}
+  logs:
+    persistence:
+      enabled: true
+      storageClass: "efs-logs"
+      existingClaim: ${airflow.pvc.logs}
+      subPath: ${airflow.subpath.logs}
+  dags:
+    persistence:
+      enabled: true
+      storageClass: "efs-dags"
+      existingClaim: ${airflow.pvc.dags}
+      subPath: ${airflow.subpath.dags}
+%{ endif ~}

@@ -1,1 +1,1 @@
-# openmetadata-terraform
+# OpenMetadata Terraform modules

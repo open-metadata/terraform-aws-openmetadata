@@ -1,0 +1,76 @@
+# OpenMetadata settings
+# Find more details: https://github.com/open-metadata/openmetadata-helm-charts/blob/main/charts/openmetadata/values.yaml
+openmetadata:
+  config:
+    pipelineServiceClientConfig:
+      enabled: true
+      apiEndpoint: ${airflow.endpoint}
+      metadataApiEndpoint: http://openmetadata.${omd.namespace}.svc:8585/api
+      auth:
+        enabled: true
+        username: ${airflow.credentials.username}
+        password:
+          secretRef: ${airflow.credentials.password.secret_ref}
+          secretKey: ${airflow.credentials.password.secret_key}
+    authorizer:
+      initialAdmins: ${omd.initial_admins}
+      principalDomain: ${omd.principal_domain}
+    elasticsearch:
+      enabled: true
+%{ if opensearch_provisioner == "aws" || opensearch_provisioner == "existing" ~}
+      host: ${omd.opensearch_host}
+      port: ${opensearch.port}
+      scheme: ${opensearch.scheme}
+%{ if opensearch_credentials_enabled ~}
+      auth:
+        enabled: true
+        username: ${opensearch.credentials.username}
+        password:
+          secretRef: ${opensearch.credentials.password.secret_ref}
+          secretKey: ${opensearch.credentials.password.secret_key}
+%{ endif ~}
+%{ endif ~}
+%{ if db_provisioner == "aws" || db_provisioner == "existing" ~}
+    database:
+      host: ${omd.db_host}
+      port: ${db.port}
+      databaseName: ${db.db_name}
+%{ if db_engine == "postgres" ~}
+      driverClass: org.postgresql.Driver
+      dbScheme: postgresql
+%{ endif ~}
+      auth:
+        username: ${db.credentials.username}
+        password:
+          secretRef: ${db.credentials.password.secret_ref}
+          secretKey: ${db.credentials.password.secret_key}
+%{ endif ~}
+image:
+  repository: ${omd.docker_image_name}
+%{ if omd.docker_image_tag != "" ~}
+  tag: ${omd.docker_image_tag}
+%{ endif ~}
+%{ if omd.image_pull_policy != "" ~}
+  pullPolicy: ${omd.image_pull_policy}
+%{ endif ~}
+%{ if length(omd.env_from) > 0 ~}
+envFrom:
+%{ for secret in omd.env_from ~}
+  - secretRef:
+      name: ${secret}
+%{ endfor ~}
+%{ endif ~}
+%{ if length(omd.extra_envs) > 0 ~}
+extraEnvs:
+%{ for key,value in omd.extra_envs ~}
+  - name: ${key}
+    value: "${value}"
+%{ endfor ~}
+%{ endif ~}
+resources:
+  limits:
+    cpu: 1
+    memory: 2048Mi
+  requests:
+    cpu: 500m
+    memory: 256Mi
