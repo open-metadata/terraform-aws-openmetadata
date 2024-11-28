@@ -1,31 +1,10 @@
 # OpenMetadata Terraform module for AWS
 
-# Provisioners
-
-This module enables you to choose from multiple provisioners to deploy the components and dependencies of OpenMetadata on AWS. The available provisioners for each component are:
-
-|                             | Helm  |  AWS  | Existing | Default provisioner|
-| :-------------------------- | :---: | :---: |  :---:  | :-----------------: |
-| **OpenMetadata**            |  ✅   |  🟥   |    🟥   |      Helm           |
-| **OpenMetadata database**   |  ✅   |  ✅   |    ✅   |      Helm           |
-| **Airflow**                 |  ✅   |  🟥   |    ✅   |      Helm           |
-| **Airflow database**        |  ✅   |  ✅   |    ✅   |      Helm           |
-| **OpenSearch**              |  ✅   |  ✅   |    ✅   |      Helm           |
-
-> [!NOTE]
-> If you select `existing` as the provisioner for Airflow, we expect the service to be fully functional, including its database.
-> The Airflow database will not be deployed in this scenario.
-
-# How we manage settings
-
-Components have default values for each provisioner, which are defined in the `defaults.tf` file.
-The final settings for each component are determined by checking whether a value has been provided for each parameter. If a value is not provided for a parameter, the default one is used. This process is handled in the `component_conf.tf` files.
-
 # Usage
 
 The following examples show how to use the module with different provisioners. Even though each example use the same provisioner for all components, you can use different provisioners for any component if you prefer.
 
-## Helm
+## Helm - for testing
 
 Using `helm` as provisioner for all components:
 
@@ -51,7 +30,41 @@ module "omd" {
 }
 ```
 
-## AWS
+## Accessing OpenMetadata
+
+OpenMetadata is exposed via the `openmetadata` service. To access it, follow these steps:
+
+1. Run the following command to set up port forwarding:
+
+    ```bash
+    kubectl port-forward service/openmetadata 8585:8585
+    ```
+
+2. Open your web browser and navigate to:
+
+    ```
+    http://localhost:8585
+    ```
+
+3. You should now see the OpenMetadata interface.
+
+## Provisioners
+
+This module enables you to choose from multiple provisioners to deploy the components and dependencies of OpenMetadata on AWS. The available provisioners for each component are:
+
+|                             | Helm  |  AWS  | Existing | Default provisioner|
+| :-------------------------- | :---: | :---: |  :---:  | :-----------------: |
+| **OpenMetadata**            |  ✅   |  🟥   |    🟥   |      Helm           |
+| **OpenMetadata database**   |  ✅   |  ✅   |    ✅   |      Helm           |
+| **Airflow**                 |  ✅   |  🟥   |    ✅   |      Helm           |
+| **Airflow database**        |  ✅   |  ✅   |    ✅   |      Helm           |
+| **OpenSearch**              |  ✅   |  ✅   |    ✅   |      Helm           |
+
+> [!NOTE]
+> If you select `existing` as the provisioner for Airflow, we expect the service to be fully functional, including its database.
+> The Airflow database will not be deployed in this scenario.
+
+## AWS - production ready
 
 Using `aws` as provisioner for all possible components:
 
@@ -157,7 +170,25 @@ module "omd" {
 }
 ```
 
-## Adding extra environment variables
+# Examples
+
+## AWS
+
+- [Complete](https://github.com/open-metadata/openmetadata-terraform/tree/main/examples/aws/complete)
+
+# Terraform docs README files
+
+- [OpenMetadata module for AWS](https://github.com/open-metadata/openmetadata-terraform/tree/main/openmetadata-aws/README.md)
+- [Airflow EFS module](https://github.com/open-metadata/openmetadata-terraform/tree/main/openmetadata-aws/modules/airflow_efs/README.md)
+- [RDS module](https://github.com/open-metadata/openmetadata-terraform/tree/main/openmetadata-aws/modules/rds/README.md)
+- [OpenSearch module](https://github.com/open-metadata/openmetadata-terraform/tree/main/openmetadata-aws/modules/opensearch/README.md)
+
+# How we manage settings
+
+Components have default values for each provisioner, which are defined in the `defaults.tf` file.
+The final settings for each component are determined by checking whether a value has been provided for each parameter. If a value is not provided for a parameter, the default one is used. This process is handled in the `component_conf.tf` files.
+
+# Adding extra environment variables
 
 You can add extra environment variables to the OpenMetadata pod by using the parameter `extra_envs`:
 
@@ -208,13 +239,11 @@ module "omd" {
 }
 ```
 
-# Accessing Airflow and OpenMetadata using port forwarding
+# Accessing Airflow using port forwarding
 
-This section explains how to access **Airflow** and **OpenMetadata** running in your Kubernetes cluster using port forwarding.
+This section explains how to access **Airflow** running in your Kubernetes cluster using port forwarding.
 
-## Accessing Airflow
-
-Airflow is exposed via the `openmetadata-deps-web` service. To access it, follow these steps:
+If you deployed Airflow using our Helm chart for dependencies, it will be exposed via the `openmetadata-deps-web` service. To access it, follow these steps:
 
 1. Run the following command to set up port forwarding:
 
@@ -230,30 +259,13 @@ Airflow is exposed via the `openmetadata-deps-web` service. To access it, follow
 
 3. You should now see the Airflow interface.
 
-## Accessing OpenMetadata
-
-OpenMetadata is exposed via the `openmetadata` service. To access it, follow these steps:
-
-1. Run the following command to set up port forwarding:
-
-    ```bash
-    kubectl port-forward service/openmetadata 8585:8585
-    ```
-
-2. Open your web browser and navigate to:
-
-    ```
-    http://localhost:8585
-    ```
-
-3. You should now see the OpenMetadata interface.
-
 ## Notes
 
 - Ensure that the required services (`openmetadata-deps-web` and `openmetadata`) are active.
 - The `kubectl port-forward` command maps a local port on your machine to the service's port in the Kubernetes cluster. This allows you to access the service as though it were running locally.
 - If a service is already running on your machine using one of the ports in the examples, you can modify the local port (the first number in the mapping, e.g., 8585:8585) to an available port of your choice.
 - Keep the terminal session with the `kubectl port-forward` command open while you are accessing the services.
+
 
 # Development
 
