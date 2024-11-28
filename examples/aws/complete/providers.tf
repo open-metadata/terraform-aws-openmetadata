@@ -1,5 +1,12 @@
 provider "aws" {
   region = var.region
+
+  default_tags {
+    tags = {
+      "provisioner" = "terraform"
+      "project"     = "openmetadata"
+    }
+  }
 }
 
 provider "kubernetes" {

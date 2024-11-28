@@ -9,6 +9,8 @@ locals {
       maintenance_window      = coalesce(try(var.db.aws.maintenance_window, null), local.db_aws_defaults.aws.maintenance_window)
       backup_window           = coalesce(try(var.db.aws.backup_window, null), local.db_aws_defaults.aws.backup_window)
       backup_retention_period = coalesce(try(var.db.aws.backup_retention_period, null), local.db_aws_defaults.aws.backup_retention_period)
+      skip_final_snapshot     = coalesce(try(var.db.aws.skip_final_snapshot, null), local.db_aws_defaults.aws.skip_final_snapshot)
+      deletion_protection     = coalesce(try(var.db.aws.deletion_protection, null), local.db_aws_defaults.aws.deletion_protection)
     }
     engine = {
       name    = local.db_aws_defaults.engine.name

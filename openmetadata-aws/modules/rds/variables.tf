@@ -30,10 +30,12 @@ variable "db_config" {
     aws = optional(object({                      # AWS specific configuration for the database
       backup_retention_period = optional(number) # Number of days to retain database backups
       backup_window           = optional(string) # Preferred backup window for RDS
+      deletion_protection     = optional(bool)   # The database can't be deleted when this value is set to true
       identifier              = optional(string) # Unique identifier for the AWS RDS instance
       instance_class          = optional(string) # Instance class of the AWS RDS instance
       maintenance_window      = optional(string) # Preferred maintenance window for RDS
       multi_az                = optional(bool)   # Whether to enable multi-AZ deployment
+      skip_final_snapshot     = optional(bool)   # If true, no DBSnapshot is created when the database is deleted
     }))
     credentials = optional(object({   # Database credentials
       password = optional(object({    # Password secret

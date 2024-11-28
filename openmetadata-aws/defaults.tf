@@ -59,6 +59,8 @@ locals {
       maintenance_window      = "Sat:02:00-Sat:03:00"
       backup_window           = "03:00-04:00"
       backup_retention_period = 30
+      skip_final_snapshot     = false
+      deletion_protection     = true
     }
     engine = {
       name    = "postgres"
@@ -93,6 +95,8 @@ locals {
       maintenance_window      = "Sat:02:00-Sat:03:00"
       backup_window           = "03:00-04:00"
       backup_retention_period = 30
+      skip_final_snapshot     = false
+      deletion_protection     = true
     }
     engine = {
       name    = "postgres"

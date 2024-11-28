@@ -9,6 +9,8 @@ locals {
       instance_class          = coalesce(try(var.airflow.db.aws.instance_class, null), local.airflow_db_aws_defaults.aws.instance_class)
       maintenance_window      = coalesce(try(var.airflow.db.aws.maintenance_window, null), local.airflow_db_aws_defaults.aws.maintenance_window)
       multi_az                = coalesce(try(var.airflow.db.aws.multi_az, null), local.airflow_db_aws_defaults.aws.multi_az)
+      skip_final_snapshot     = coalesce(try(var.airflow.db.aws.skip_final_snapshot, null), local.airflow_db_aws_defaults.aws.skip_final_snapshot)
+      deletion_protection     = coalesce(try(var.airflow.db.aws.deletion_protection, null), local.airflow_db_aws_defaults.aws.deletion_protection)
     }
     credentials = {
       username = coalesce(try(var.airflow.db.credentials.username, null), local.airflow_db_aws_defaults.credentials.username)
