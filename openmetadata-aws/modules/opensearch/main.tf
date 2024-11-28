@@ -7,7 +7,7 @@ data "aws_iam_policy_document" "opensearch" {
       identifiers = ["*"]
     }
 
-    actions   = ["es:*"]
+    actions   = ["es:ESHttp*"]
     resources = ["*"]
   }
 }
