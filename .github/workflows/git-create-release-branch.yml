@@ -23,7 +23,7 @@ jobs:
           fetch-depth: 0
       - name: Update application versions
         run: |
-          sed -i "s/$(cat .version)/${{ inputs.release_branch_name}}/g" openmetadata-aws/openmetadata_dependencies.tf openmetadata-aws/README_terraform.md openmetadata-aws/openmetadata.tf openmetadata-aws/variables.tf examples/aws/complete/variables.tf .version
+          sed -i "s/$(cat .version)/${{ inputs.release_branch_name}}/g" openmetadata-aws/openmetadata_dependencies.tf openmetadata-aws/README_terraform.md openmetadata-aws/README.md openmetadata-aws/openmetadata.tf openmetadata-aws/variables.tf examples/aws/complete/variables.tf .version
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
