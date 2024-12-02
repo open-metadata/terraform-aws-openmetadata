@@ -10,7 +10,7 @@ Using `helm` as provisioner for all components:
 
 ```hcl
 module "omd" {
-  source = "github.com/open-metadata/openmetadata-terraform//openmetadata-aws?ref=5.1.12"
+  source = "github.com/open-metadata/openmetadata-terraform//openmetadata-aws?ref=1.5.12"
 
   # Namespace where OpenMetadata and dependencies will be deployed
   app_namespace    = "example"
@@ -70,7 +70,7 @@ Using `aws` as provisioner for all possible components:
 
 ```hcl
 module "omd" {
-  source = "github.com/open-metadata/openmetadata-terraform//openmetadata-aws?ref=5.1.12"
+  source = "github.com/open-metadata/openmetadata-terraform//openmetadata-aws?ref=1.5.12"
   
   # Namespace where OpenMetadata and dependencies will be deployed
   app_namespace = "example"
@@ -118,7 +118,7 @@ Using `existing` as provisioner for all possible components:
 
 ```hcl
 module "omd" {
-  source = "github.com/open-metadata/openmetadata-terraform//openmetadata-aws?ref=5.1.12"
+  source = "github.com/open-metadata/openmetadata-terraform//openmetadata-aws?ref=1.5.12"
 
   # Namespace where OpenMetadata and dependencies will be deployed
   app_namespace = "example"
@@ -194,7 +194,7 @@ You can add extra environment variables to the OpenMetadata pod by using the par
 
 ```hcl
 module "omd" {
-  source = "github.com/open-metadata/openmetadata-terraform//openmetadata-aws?ref=5.1.12"
+  source = "github.com/open-metadata/openmetadata-terraform//openmetadata-aws?ref=1.5.12"
 
   # Namespace where OpenMetadata and dependencies will be deployed
   app_namespace    = "example"
@@ -220,7 +220,7 @@ You can also add extra environment variables from Kubernetes secrets by using th
 
 ```hcl
 module "omd" {
-  source = "github.com/open-metadata/openmetadata-terraform//openmetadata-aws?ref=5.1.12"
+  source = "github.com/open-metadata/openmetadata-terraform//openmetadata-aws?ref=1.5.12"
 
   # Namespace where OpenMetadata and dependencies will be deployed
   app_namespace    = "example"
