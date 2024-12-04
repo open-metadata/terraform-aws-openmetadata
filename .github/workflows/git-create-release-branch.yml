@@ -23,7 +23,7 @@ jobs:
           fetch-depth: 0
       - name: Update application versions
         run: |
-          sed -i "s/$(cat .version)/${{ inputs.release_branch_name}}/g" README_terraform.md README.md variables.tf examples/complete/variables.tf .version
+          sed -i "s/$(cat .version)/${{ inputs.release_branch_name}}/g" README_terraform.md README.md variables.tf examples/*/variables.tf examples/*/main.tf .version
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
