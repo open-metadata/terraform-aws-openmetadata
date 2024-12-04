@@ -178,11 +178,11 @@ module "omd" {
 
 # Terraform docs README files
 
-- [OpenMetadata deployment](modules/openmetadata-deployment/README.md)
-- [OpenMetadata dependencies](modules/openmetadata-dependencies/README.md)
-- [Airflow EFS module](modules/airflow_efs/README.md)
-- [RDS module](modules/rds/README.md)
-- [OpenSearch module](modules/opensearch/README.md)
+- [OpenMetadata deployment](modules/openmetadata-deployment)
+- [OpenMetadata dependencies](modules/openmetadata-dependencies)
+- [Airflow EFS module](modules/airflow_efs)
+- [RDS module](modules/rds)
+- [OpenSearch module](modules/opensearch)
 
 # How we manage settings
 
