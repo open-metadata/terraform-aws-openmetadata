@@ -11,7 +11,7 @@ Using `helm` as provisioner for all components:
 ```hcl
 module "omd" {
   source  = "open-metadata/openmetadata/aws"
-  version = "1.5.13"
+  version = "1.6.0"
 
   # Namespace where OpenMetadata and dependencies will be deployed
   app_namespace    = "example"
@@ -66,7 +66,7 @@ Using `aws` as provisioner for all possible components:
 ```hcl
 module "omd" {
   source  = "open-metadata/openmetadata/aws"
-  version = "1.5.13"
+  version = "1.6.0"
 
   # Namespace where OpenMetadata and dependencies will be deployed
   app_namespace = "example"
@@ -112,7 +112,7 @@ Using `existing` as provisioner for all possible components:
 ```hcl
 module "omd" {
   source  = "open-metadata/openmetadata/aws"
-  version = "1.5.13"
+  version = "1.6.0"
 
   # Namespace where OpenMetadata and dependencies will be deployed
   app_namespace = "example"
@@ -183,7 +183,7 @@ eter `extra_envs`:
 ```hcl
 module "omd" {
   source  = "open-metadata/openmetadata/aws"
-  version = "1.5.13"
+  version = "1.6.0"
 
   # Namespace where OpenMetadata and dependencies will be deployed
   app_namespace    = "example"
@@ -207,7 +207,7 @@ You can also add extra environment variables from Kubernetes secrets by using th
 ```hcl
 module "omd" {
   source  = "open-metadata/openmetadata/aws"
-  version = "1.5.13"
+  version = "1.6.0"
 
   # Namespace where OpenMetadata and dependencies will be deployed
   app_namespace    = "example"
