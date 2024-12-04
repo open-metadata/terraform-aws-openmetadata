@@ -1,5 +1,5 @@
 output:
-  file: README.md
+  file: docs/README.md
   mode: replace
   template: |-
     {{ .Content }}

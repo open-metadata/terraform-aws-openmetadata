@@ -174,14 +174,15 @@ module "omd" {
 
 ## AWS
 
-- [Complete](https://github.com/open-metadata/openmetadata-terraform/tree/main/examples/aws/complete)
+- [Complete](examples/complete)
 
 # Terraform docs README files
 
-- [OpenMetadata module for AWS](https://github.com/open-metadata/openmetadata-terraform/tree/main/openmetadata-aws/README.md)
-- [Airflow EFS module](https://github.com/open-metadata/openmetadata-terraform/tree/main/openmetadata-aws/modules/airflow_efs/README.md)
-- [RDS module](https://github.com/open-metadata/openmetadata-terraform/tree/main/openmetadata-aws/modules/rds/README.md)
-- [OpenSearch module](https://github.com/open-metadata/openmetadata-terraform/tree/main/openmetadata-aws/modules/opensearch/README.md)
+- [OpenMetadata deployment](modules/openmetadata-deployment/README.md)
+- [OpenMetadata dependencies](modules/openmetadata-dependencies/README.md)
+- [Airflow EFS module](modules/airflow_efs/README.md)
+- [RDS module](modules/rds/README.md)
+- [OpenSearch module](modules/opensearch/README.md)
 
 # How we manage settings
 
@@ -189,8 +190,7 @@ Components have default values for each provisioner, which are defined in the `d
 The final settings for each component are determined by checking whether a value has been provided for each parameter. If a value is not provided for a parameter, the default one is used. This process is handled in the `component_conf.tf` files.
 
 # Adding extra environment variables
-
-You can add extra environment variables to the OpenMetadata pod by using the parameter `extra_envs`:
+eter `extra_envs`:
 
 ```hcl
 module "omd" {

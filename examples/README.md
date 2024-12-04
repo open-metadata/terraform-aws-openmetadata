@@ -2,4 +2,4 @@
 
 ## AWS
 
-- [Complete](https://github.com/open-metadata/openmetadata-terraform/tree/main/examples/aws/complete)
+- [Complete](https://github.com/open-metadata/terraform-aws-openmetadata/tree/main/examples/complete)
