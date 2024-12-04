@@ -180,7 +180,7 @@ module "omd" {
 
 - [OpenMetadata deployment](modules/openmetadata-deployment)
 - [OpenMetadata dependencies](modules/openmetadata-dependencies)
-- [Airflow EFS module](modules/airflow_efs)
+- [Airflow EFS module](modules/airflow-efs)
 - [RDS module](modules/rds)
 - [OpenSearch module](modules/opensearch)
 
