@@ -1,0 +1,5 @@
+output:
+  file: docs/README.md
+  mode: replace
+  template: |-
+    {{ .Content }}
