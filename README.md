@@ -10,16 +10,11 @@ Using `helm` as provisioner for all components:
 
 ```hcl
 module "omd" {
-  source = "github.com/open-metadata/openmetadata-terraform//openmetadata-aws?ref=1.5.12"
+  source  = "open-metadata/openmetadata/aws"
+  version = "1.5.12"
 
   # Namespace where OpenMetadata and dependencies will be deployed
   app_namespace    = "example"
-
-  # Version of OpenMetadata to deploy
-  app_version      = "1.5.12"
-
-  # ARN of the KMS key used to encrypt the EFS volumes
-  kms_key_id       = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
 
   # Subnet IDs, used for the Airflow's EFS mount targets and EFS security group
   subnet_ids       = ["subnet-1a2b3c4d", "subnet-5e6f7g8h", "subnet-9i0j1k2l"]
@@ -70,13 +65,11 @@ Using `aws` as provisioner for all possible components:
 
 ```hcl
 module "omd" {
-  source = "github.com/open-metadata/openmetadata-terraform//openmetadata-aws?ref=1.5.12"
-  
+  source  = "open-metadata/openmetadata/aws"
+  version = "1.5.12"
+
   # Namespace where OpenMetadata and dependencies will be deployed
   app_namespace = "example"
-
-  # Version of OpenMetadata to deploy
-  app_version  = "1.5.12"
 
   # Security group IDs assigned to the EKS nodes, the RDS instances, EFS volumes, and OpenSearch domain will allow inbound traffic from them
   eks_nodes_sg_ids = ["sg-1234abcd5678efgh", "sg-8765ijkl4321mnop"]
@@ -118,16 +111,11 @@ Using `existing` as provisioner for all possible components:
 
 ```hcl
 module "omd" {
-  source = "github.com/open-metadata/openmetadata-terraform//openmetadata-aws?ref=1.5.12"
+  source  = "open-metadata/openmetadata/aws"
+  version = "1.5.12"
 
   # Namespace where OpenMetadata and dependencies will be deployed
   app_namespace = "example"
-
-  # Version of OpenMetadata to deploy
-  app_version  = "1.5.12"
-
-  # ARN of the KMS key used to encrypt resources
-  kms_key_id = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
 
   # OpenMetadata database settings
   db = {
@@ -194,13 +182,11 @@ eter `extra_envs`:
 
 ```hcl
 module "omd" {
-  source = "github.com/open-metadata/openmetadata-terraform//openmetadata-aws?ref=1.5.12"
+  source  = "open-metadata/openmetadata/aws"
+  version = "1.5.12"
 
   # Namespace where OpenMetadata and dependencies will be deployed
   app_namespace    = "example"
-
-  # Version of OpenMetadata to deploy
-  app_version      = "1.5.12"
 
   # Subnet IDs, used for the Airflow's EFS mount targets and EFS security group
   subnet_ids       = ["subnet-1a2b3c4d", "subnet-5e6f7g8h", "subnet-9i0j1k2l"]
@@ -220,13 +206,11 @@ You can also add extra environment variables from Kubernetes secrets by using th
 
 ```hcl
 module "omd" {
-  source = "github.com/open-metadata/openmetadata-terraform//openmetadata-aws?ref=1.5.12"
+  source  = "open-metadata/openmetadata/aws"
+  version = "1.5.12"
 
   # Namespace where OpenMetadata and dependencies will be deployed
   app_namespace    = "example"
-
-  # Version of OpenMetadata to deploy
-  app_version      = "1.5.12"
 
   # Subnet IDs, used for the Airflow's EFS mount targets and EFS security group
   subnet_ids       = ["subnet-1a2b3c4d", "subnet-5e6f7g8h", "subnet-9i0j1k2l"]

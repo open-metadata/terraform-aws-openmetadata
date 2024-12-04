@@ -1,7 +1,8 @@
 # OpenMetadata AWS module
 
 module "app" {
-  source = "../../"
+  source  = "open-metadata/openmetadata/aws"
+  version = "1.5.12"
 
   airflow  = var.airflow
   env_from = local.env_from
