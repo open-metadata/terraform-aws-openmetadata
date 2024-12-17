@@ -16,7 +16,10 @@ module "omd" {
   # Namespace where OpenMetadata and dependencies will be deployed
   app_namespace    = "example"
 
-  # Subnet IDs, used for the Airflow's EFS mount targets and EFS security group
+  # Security group IDs assigned to the EKS nodes, required for the Airflow's EFS security groups
+  eks_nodes_sg_ids = ["sg-1234abcd5678efgh"]
+
+  # Subnet IDs, required for the Airflow's EFS mount targets
   subnet_ids       = ["subnet-1a2b3c4d", "subnet-5e6f7g8h", "subnet-9i0j1k2l"]
 
   # VPC ID for the security groups of the EFS volumes
@@ -178,7 +181,8 @@ Components have default values for each provisioner, which are defined in the `d
 The final settings for each component are determined by checking whether a value has been provided for each parameter. If a value is not provided for a parameter, the default one is used. This process is handled in the `component_conf.tf` files.
 
 # Adding extra environment variables
-eter `extra_envs`:
+
+You can add extra environment variables by using the parameter `extra_envs`:
 
 ```hcl
 module "omd" {
@@ -188,7 +192,10 @@ module "omd" {
   # Namespace where OpenMetadata and dependencies will be deployed
   app_namespace    = "example"
 
-  # Subnet IDs, used for the Airflow's EFS mount targets and EFS security group
+  # Security group IDs assigned to the EKS nodes, required for the Airflow's EFS security groups
+  eks_nodes_sg_ids = ["sg-1234abcd5678efgh"]
+
+  # Subnet IDs, required for the Airflow's EFS mount targets
   subnet_ids       = ["subnet-1a2b3c4d", "subnet-5e6f7g8h", "subnet-9i0j1k2l"]
 
   # VPC ID for the security groups of the EFS volumes
@@ -212,7 +219,10 @@ module "omd" {
   # Namespace where OpenMetadata and dependencies will be deployed
   app_namespace    = "example"
 
-  # Subnet IDs, used for the Airflow's EFS mount targets and EFS security group
+  # Security group IDs assigned to the EKS nodes, required for the Airflow's EFS security groups
+  eks_nodes_sg_ids = ["sg-1234abcd5678efgh"]
+
+  # Subnet IDs, required for the Airflow's EFS mount targets
   subnet_ids       = ["subnet-1a2b3c4d", "subnet-5e6f7g8h", "subnet-9i0j1k2l"]
 
   # VPC ID for the security groups of the EFS volumes
