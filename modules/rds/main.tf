@@ -7,7 +7,7 @@ resource "random_password" "db_password" {
   min_numeric      = 1
   min_special      = 1
   special          = true
-  override_special = "!#$%^&*()-_=+[]{}<>:?"
+  override_special = "#^&*()-_=+[]{}:?"
 }
 
 module "rds" {
