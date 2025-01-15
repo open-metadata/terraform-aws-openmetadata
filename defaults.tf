@@ -135,5 +135,10 @@ locals {
       logs = "airflow-logs"
       dags = "airflow-dags"
     }
+    logs_cleanup = {
+      enabled     = false
+      schedule    = "0 4 * * *"
+      retain_days = 180
+    }
   }
 }
