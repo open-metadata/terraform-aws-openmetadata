@@ -2,7 +2,6 @@ locals {
   omd_dependencies_config = {
     opensearch_storage_class_enabled = try(var.opensearch.storage_class, null) != null
     airflow_enabled                  = local.airflow_provisioner == "helm" ? true : false
-    airflow_logs_cleanup_enabled     = local.airflow.logs_cleanup.enabled
     mysql_enabled                    = local.db_provisioner == "helm" || local.airflow_db_provisioner == "helm" ? true : false
     opensearch_enabled               = local.opensearch_provisioner == "helm" ? true : false
     opensearch_storage_class_enabled = try(var.opensearch.storage_class, null) != null ? true : false
@@ -20,7 +19,6 @@ locals {
 
   omd_dependencies_template_vars = {
     airflow_enabled                  = local.omd_dependencies_config.airflow_enabled
-    airflow_logs_cleanup_enabled     = local.omd_dependencies_config.airflow_logs_cleanup_enabled
     mysql_enabled                    = local.omd_dependencies_config.mysql_enabled
     opensearch_enabled               = local.omd_dependencies_config.opensearch_enabled
     opensearch_storage_class_enabled = local.omd_dependencies_config.opensearch_storage_class_enabled

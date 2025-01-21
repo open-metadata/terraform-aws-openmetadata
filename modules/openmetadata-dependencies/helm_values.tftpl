@@ -57,7 +57,7 @@ airflow:
       storageClass: "efs-logs"
       existingClaim: ${airflow.pvc.logs}
       subPath: ${airflow.subpath.logs}
-%{ if airflow_logs_cleanup_enabled ~}
+%{ if airflow.logs_cleanup.enabled ~}
       cleanup:
         enabled: true
         schedule: "${airflow.logs_cleanup.schedule}"
