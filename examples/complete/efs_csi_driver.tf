@@ -5,6 +5,10 @@ resource "aws_eks_addon" "efs_csi_driver" {
   cluster_name             = local.eks_cluster_name
   addon_name               = "aws-efs-csi-driver"
   service_account_role_arn = module.efs_csi_irsa.iam_role_arn
+  depends_on = [
+    module.efs_csi_irsa,
+    aws_eks_node_group.nodes
+  ]
 }
 
 module "efs_csi_irsa" {

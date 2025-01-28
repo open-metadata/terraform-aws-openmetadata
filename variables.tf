@@ -153,11 +153,16 @@ variable "airflow" {
       provisioner  = string           # One of 'helm', 'aws', or 'existing'
       storage_size = optional(number) # Size of the Airflow database storage in GB
     }))
-    endpoint    = optional(string) # Endpoint URL for the Airflow instance
-    provisioner = optional(string) # One of 'helm' or 'existing'
-    storage = optional(object({    # Airflow storage configuration
-      dags = optional(number)      # Size of storage allocated for DAGs (in GB)
-      logs = optional(number)      # Size of storage allocated for logs (in GB)
+    endpoint    = optional(string)   # Endpoint URL for the Airflow instance
+    provisioner = optional(string)   # One of 'helm' or 'existing'
+    logs_cleanup = optional(object({ # Airflow logs cleanup configuration
+      enabled     = optional(bool)   # Whether to enable log cleanup
+      schedule    = optional(string) # Schedule for log cleanup
+      retain_days = optional(number) # Number of days to retain logs
+    }))
+    storage = optional(object({ # Airflow storage configuration
+      dags = optional(number)   # Size of storage allocated for DAGs (in GB)
+      logs = optional(number)   # Size of storage allocated for logs (in GB)
     }))
   })
   default = {
