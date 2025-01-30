@@ -11,6 +11,14 @@ Short blurb explaining:
 
 I worked on ... because ...
 
+## Motivation and Context
+<!--- Why is this change required? What problem does it solve? -->
+<!--- If it fixes an open issue, please link to the issue here. -->
+
+## Breaking Changes
+<!-- Does this break backwards compatibility with the current major version? -->
+<!-- If so, please provide an explanation why it is necessary. -->
+
 ## How Has This Been Tested?
 - [ ] I have updated at least one of the `examples/*` to demonstrate and validate my change(s)
 - [ ] I have tested and validated these changes using one or more of the provided `examples/*` projects
