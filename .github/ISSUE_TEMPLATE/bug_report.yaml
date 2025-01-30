@@ -24,16 +24,12 @@ body:
     attributes:
       label: 'Expected behavior'
       description: 'What did you expect to happen?'
-    validations:
-      required: true
 
   - type: 'textarea'
     id: 'observed_behavior'
     attributes:
       label: 'Observed behavior'
       description: 'What happened instead?'
-    validations:
-      required: true
 
   - type: 'textarea'
     id: 'tf_config'
