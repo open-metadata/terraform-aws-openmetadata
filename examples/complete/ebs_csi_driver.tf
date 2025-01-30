@@ -6,6 +6,10 @@ resource "aws_eks_addon" "ebs_csi_driver" {
   service_account_role_arn    = module.ebs_csi_irsa.iam_role_arn
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
+  depends_on = [
+    module.ebs_csi_irsa,
+    aws_eks_node_group.nodes
+  ]
 }
 
 module "ebs_csi_irsa" {

@@ -11,6 +11,11 @@ locals {
     }
     db       = local.airflow_db
     endpoint = coalesce(try(var.airflow.endpoint, null), local.airflow_helm_defaults.endpoint)
+    logs_cleanup = {
+      enabled     = coalesce(try(var.airflow.logs_cleanup.enabled, null), local.airflow_helm_defaults.logs_cleanup.enabled)
+      schedule    = coalesce(try(var.airflow.logs_cleanup.schedule, null), local.airflow_helm_defaults.logs_cleanup.schedule)
+      retain_days = coalesce(try(var.airflow.logs_cleanup.retain_days, null), local.airflow_helm_defaults.logs_cleanup.retain_days)
+    }
     pvc = {
       logs = local.airflow_helm_defaults.pvc.logs
       dags = local.airflow_helm_defaults.pvc.dags
