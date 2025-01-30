@@ -1,0 +1,24 @@
+name: Feature task
+description: Create a Feature based on an issue
+title: "[Task]: "
+labels: ['feature request']
+
+body:
+- type: 'markdown'
+  attributes:
+    value: |-
+      Thank you for requesting a feature. Please complete the form below so we can triage and prioritize your feature.
+
+- id: 'issue_reference'
+  type: 'textarea'
+  attributes:
+    label: 'Issue Reference'
+    description: 'Add the feature issue reference'
+  validations:
+    required: true
+
+- id: 'description'
+  type: 'textarea'
+  attributes:
+    label: 'Describe the task'
+    description: 'A clear and concise description of what the bug is.'

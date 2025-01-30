@@ -1,0 +1,81 @@
+name: Bug Report
+description: File a bug report.
+title: "[Bug]: "
+labels: ["bug"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Also tell us, what did you expect to happen?
+      placeholder: Tell us what you see!
+      value: "A bug happened!"
+    validations:
+      required: true
+
+  - type: 'textarea'
+    id: 'expected_behavior'
+    attributes:
+      label: 'Expected behavior'
+      description: 'What did you expect to happen?'
+
+  - type: 'textarea'
+    id: 'observed_behavior'
+    attributes:
+      label: 'Observed behavior'
+      description: 'What happened instead?'
+
+  - type: 'textarea'
+    id: 'tf_config'
+    attributes:
+      label: 'Terraform Configuration'
+      description: 'Paste your reproducible Terraform configuration including all module and version constraints, removing any sensitive values.'
+      render: 'hcl'
+    validations:
+      required: true
+
+  - type: 'textarea'
+    id: 'tf_version'
+    attributes:
+      label: 'Terraform Version'
+      description: 'Paste the output of `terraform version`, removing any sensitive values.'
+      render: 'sh'
+    validations:
+      required: true
+
+  - type: 'textarea'
+    id: 'tf_providers'
+    attributes:
+      label: 'Terraform Provider Versions'
+      description: 'Paste the output of `terraform providers`, removing any sensitive values.'
+      render: 'sh'
+    validations:
+      required: true
+
+  - type: 'textarea'
+    id: 'additional'
+    attributes:
+      label: 'Additional information'
+      description: 'Is there anything else you think we should know?'
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://docs.open-metadata.org/developers/contribute). 
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
