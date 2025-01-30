@@ -7,7 +7,7 @@ assignees: ''
 ---
 
 **Affected module**
-Does it impact the UI, backend or Ingestion Framework?
+Does it impact the backend or Ingestion Framework?
 
 **Describe the bug**
 A clear and concise description of what the bug is.
@@ -26,3 +26,5 @@ A clear and concise description of what you expected to happen.
 
 **Additional context**
 Add any other context about the problem here.
+
+Thanks for taking the time to fill out this bug report!
