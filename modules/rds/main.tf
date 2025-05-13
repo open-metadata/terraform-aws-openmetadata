@@ -21,6 +21,7 @@ module "rds" {
   manage_master_user_password = false
 
   engine               = "postgres"
+  engine_version       = var.db_config.engine.version
   family               = "postgres${var.db_config.engine.version}"
   major_engine_version = var.db_config.engine.version
   instance_class       = var.db_config.aws.instance_class
