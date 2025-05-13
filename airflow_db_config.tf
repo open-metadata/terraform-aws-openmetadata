@@ -22,7 +22,7 @@ locals {
     db_name = coalesce(try(var.airflow.db.airflow_db_name, null), local.airflow_db_aws_defaults.db_name)
     engine = {
       name    = local.airflow_db_aws_defaults.engine.name
-      version = coalesce(try(var.airflow.db.engine_version, null), local.airflow_db_aws_defaults.engine.version)
+      version = coalesce(try(var.airflow.db.engine.version, null), local.airflow_db_aws_defaults.engine.version)
     }
     port         = coalesce(try(var.airflow.db.port, null), local.airflow_db_aws_defaults.port)
     storage_size = coalesce(try(var.airflow.db.storage_size, null), local.airflow_db_aws_defaults.storage_size)

@@ -14,7 +14,7 @@ locals {
     }
     engine = {
       name    = local.db_aws_defaults.engine.name
-      version = coalesce(try(var.db.engine_version, null), local.db_aws_defaults.engine.version)
+      version = coalesce(try(var.db.engine.version, null), local.db_aws_defaults.engine.version)
     }
     port         = coalesce(try(var.db.port, null), local.db_aws_defaults.port)
     db_name      = coalesce(try(var.db.db_name, null), local.db_aws_defaults.db_name)
