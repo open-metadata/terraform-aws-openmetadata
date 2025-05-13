@@ -45,7 +45,7 @@ resource "aws_iam_openid_connect_provider" "this" {
 
 resource "aws_eks_node_group" "nodes" {
   cluster_name    = local.eks_cluster_name
-  node_group_name = "eks-nodes"
+  node_group_name = "eks-nodes-${local.eks_cluster_name}-${var.region}"
   node_role_arn   = aws_iam_role.eks_nodes.arn
   subnet_ids      = local.subnet_ids
   disk_size       = local.eks_nodes_disk_size

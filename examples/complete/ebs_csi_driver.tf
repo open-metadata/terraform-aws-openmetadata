@@ -15,7 +15,7 @@ resource "aws_eks_addon" "ebs_csi_driver" {
 module "ebs_csi_irsa" {
   source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
 
-  role_name             = "ebs-csi"
+  role_name             = "ebs-csi-${local.eks_cluster_name}-${var.region}"
   attach_ebs_csi_policy = true
 
   oidc_providers = {

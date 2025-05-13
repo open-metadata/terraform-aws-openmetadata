@@ -19,7 +19,7 @@ data "aws_iam_policy_document" "eks_cluster" {
 }
 
 resource "aws_iam_role" "eks_cluster" {
-  name = "eks-cluster"
+  name = "eks-cluster-${local.eks_cluster_name}-${var.region}"
   path = "/"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -37,7 +37,7 @@ resource "aws_iam_role" "eks_cluster" {
 }
 
 resource "aws_iam_role_policy" "eks_cluster" {
-  name   = "eks-cluster"
+  name   = "eks-cluster-${local.eks_cluster_name}-${var.region}"
   role   = aws_iam_role.eks_cluster.id
   policy = data.aws_iam_policy_document.eks_cluster.json
 }
@@ -61,7 +61,7 @@ data "aws_iam_policy_document" "eks_nodes_assume_role" {
 }
 
 resource "aws_iam_role" "eks_nodes" {
-  name               = "eks-nodes"
+  name               = "eks-nodes-${local.eks_cluster_name}-${var.region}"
   path               = "/"
   assume_role_policy = data.aws_iam_policy_document.eks_nodes_assume_role.json
 }
