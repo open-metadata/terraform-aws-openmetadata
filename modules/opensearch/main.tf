@@ -92,7 +92,8 @@ resource "random_password" "opensearch_password" {
   min_numeric      = 1
   min_special      = 1
   special          = true
-  override_special = "_-."
+  # YAML-safe special characters only - excludes quotes, backslashes, and other problematic chars
+  override_special = "!@#$%^&*()-_=+[]{}:?"
 }
 
 resource "kubernetes_secret_v1" "opensearch_credentials" {

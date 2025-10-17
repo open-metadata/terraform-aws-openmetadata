@@ -1,0 +1,12 @@
+# Test YAML template to validate password handling
+test_config:
+  password: "${test_password}"
+  # Test that password is properly rendered without breaking YAML syntax
+  database:
+    auth:
+      password: "${test_password}"
+  services:
+    - name: "test-service"
+      password: "${test_password}"
+      config:
+        secret: "${test_password}"
