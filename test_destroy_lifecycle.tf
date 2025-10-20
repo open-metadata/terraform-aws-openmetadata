@@ -46,7 +46,32 @@ locals {
         secret_key = "password"
       }
     }
-  } : {}
+  } : {
+    aws = {
+      identifier              = null
+      instance_class          = null
+      backup_retention_period = null
+      backup_window          = null
+      maintenance_window     = null
+      multi_az              = null
+      skip_final_snapshot   = null
+      deletion_protection   = null
+    }
+    engine = {
+      name    = null
+      version = null
+    }
+    port         = null
+    db_name      = null
+    storage_size = null
+    credentials = {
+      username = null
+      password = {
+        secret_ref = null
+        secret_key = null
+      }
+    }
+  }
 }
 
 # Test Kubernetes secret cleanup
@@ -117,8 +142,15 @@ output "destroy_test_config" {
     }
     helm_release_count = length(helm_release.test_openmetadata)
     kubernetes_secrets_count = length(kubernetes_secret_v1.test_db_credentials)
+    message = "Destroy testing enabled in non-production environment"
   } : {
     test_enabled = false
+    db_config = {
+      skip_final_snapshot = null
+      deletion_protection = null
+    }
+    helm_release_count = 0
+    kubernetes_secrets_count = 0
     message = "Destroy testing disabled in production environment"
   }
   description = "Configuration validation for destroy operations"
