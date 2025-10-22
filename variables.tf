@@ -13,7 +13,7 @@ variable "app_namespace" {
 variable "app_version" {
   type        = string
   description = "OpenMetadata version to deploy."
-  default     = "1.10.3"
+  default     = "1.9.11.8"
 }
 
 variable "docker_image_name" {
