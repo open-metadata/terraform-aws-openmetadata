@@ -2,7 +2,7 @@
 
 module "app" {
   source  = "open-metadata/openmetadata/aws"
-  version = "1.10.13"
+  version = "1.10.14"
 
   airflow  = var.airflow
   env_from = local.env_from
