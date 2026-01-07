@@ -204,3 +204,9 @@ variable "opensearch" {
     provisioner = "helm"
   }
 }
+
+variable "environment" {
+  type        = string
+  description = "Environment name (e.g., development, staging, production). Used for conditional resource creation and lifecycle management."
+  default     = "development"
+}
