@@ -9,6 +9,8 @@ resource "random_password" "airflow_auth" {
   min_numeric = 1
   min_special = 1
   special     = true
+  # YAML-safe special characters only - excludes quotes, backslashes, and other problematic chars
+  override_special = "!@#$%^&*()-_=+[]{}:?"
 }
 
 resource "kubernetes_secret_v1" "airflow_auth" {
