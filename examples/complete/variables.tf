@@ -66,7 +66,7 @@ variable "app_extra_envs" {
 variable "app_version" {
   type        = string
   description = "OpenMetadata version to deploy"
-  default     = "1.11.7"
+  default     = "1.12.0-rc1"
 }
 
 variable "azs_to_use" {
