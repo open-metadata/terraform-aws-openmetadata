@@ -12,4 +12,9 @@ resource "helm_release" "openmetadata" {
   namespace  = var.namespace
   wait       = false
   values     = local.template
+
+  # Ensure proper cleanup during destroy operations
+  lifecycle {
+    create_before_destroy = false  # Don't create new release before destroying old one
+  }
 }
