@@ -11,11 +11,18 @@ locals {
     existing = try(var.airflow.db.host, null)
     aws      = try(module.airflow_db["this"].db_instance_address, null)
     helm     = "mysql"
+    none     = null
   }
 
   omd_dependencies = {
     airflow_db_host = local.airflow_db_host[local.airflow_db_provisioner]
   }
+
+  omd_deps_extra_helm_values = merge(
+    { for k, v in var.airflow_helm_values : "airflow.${k}" => v },
+    { for k, v in var.mysql_helm_values : "mysql.${k}" => v },
+    { for k, v in var.opensearch_helm_values : "opensearch.${k}" => v },
+  )
 
   omd_dependencies_template_vars = {
     airflow_enabled                  = local.omd_dependencies_config.airflow_enabled
@@ -33,5 +40,8 @@ locals {
     airflow    = local.airflow
     mysql      = local.shared_db_helm_config
     opensearch = local.opensearch
+
+    airflow_admin_password            = try(random_password.airflow_auth["this"].result, "")
+    airflow_db_connection_secret_name = local.airflow_db_provisioner == "aws" ? "airflow-db-connection" : ""
   }
 }

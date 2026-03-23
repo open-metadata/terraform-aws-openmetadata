@@ -24,9 +24,21 @@ locals {
     opensearch_credentials_enabled = local.opensearch_credentials_enabled
     db_provisioner                 = local.db_provisioner
     db_engine                      = local.db.engine.name
+    airflow_provisioner            = local.airflow_provisioner
     omd                            = local.omd
     opensearch                     = local.opensearch
     db                             = local.db
-    airflow                        = local.airflow
+    airflow = {
+      endpoint = try(local.airflow.endpoint, "")
+      credentials = {
+        username = try(local.airflow.credentials.username, "")
+        password = {
+          secret_ref = try(local.airflow.credentials.password.secret_ref, "")
+          secret_key = try(local.airflow.credentials.password.secret_key, "")
+        }
+      }
+    }
   }
+
+  omd_extra_helm_values = var.openmetadata_helm_values
 }

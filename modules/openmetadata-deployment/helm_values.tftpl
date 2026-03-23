@@ -4,14 +4,32 @@ openmetadata:
   config:
     pipelineServiceClientConfig:
       enabled: true
-      apiEndpoint: ${airflow.endpoint}
       metadataApiEndpoint: http://openmetadata.${omd.namespace}.svc:8585/api
-      auth:
-        enabled: true
-        username: ${airflow.credentials.username}
-        password:
-          secretRef: ${airflow.credentials.password.secret_ref}
-          secretKey: ${airflow.credentials.password.secret_key}
+%{ if airflow_provisioner == "none" ~}
+      type: "k8s"
+      k8s:
+        useOMJobOperator: true
+%{ else ~}
+      type: "airflow"
+      airflow:
+        className: "org.openmetadata.service.clients.pipeline.airflow.AirflowRESTClient"
+        apiEndpoint: ${airflow.endpoint}
+        verifySsl: "no-ssl"
+        hostIp: ""
+        ingestionIpInfoEnabled: false
+        healthCheckInterval: 300
+        sslCertificatePath: "/no/path"
+        auth:
+          enabled: true
+          username: ${airflow.credentials.username}
+          password:
+            secretRef: ${airflow.credentials.password.secret_ref}
+            secretKey: ${airflow.credentials.password.secret_key}
+          trustStorePath: ""
+          trustStorePassword:
+            secretRef: ""
+            secretKey: ""
+%{ endif ~}
     authorizer:
       initialAdmins: ${omd.initial_admins}
       principalDomain: ${omd.principal_domain}
@@ -30,20 +48,32 @@ openmetadata:
           secretKey: ${opensearch.credentials.password.secret_key}
 %{ endif ~}
 %{ endif ~}
+      searchType: opensearch
 %{ if db_provisioner == "aws" || db_provisioner == "existing" ~}
     database:
+      enabled: true
       host: ${omd.db_host}
       port: ${db.port}
       databaseName: ${db.db_name}
 %{ if db_engine == "postgres" ~}
       driverClass: org.postgresql.Driver
       dbScheme: postgresql
+%{ else ~}
+      driverClass: com.mysql.cj.jdbc.Driver
+      dbScheme: mysql
+      dbParams: "allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC"
 %{ endif ~}
       auth:
         username: ${db.credentials.username}
         password:
           secretRef: ${db.credentials.password.secret_ref}
           secretKey: ${db.credentials.password.secret_key}
+%{ endif ~}
+%{ if airflow_provisioner == "none" ~}
+omjobOperator:
+  enabled: true
+  image:
+    tag: ${omd.docker_image_tag}
 %{ endif ~}
 image:
   repository: ${omd.docker_image_name}

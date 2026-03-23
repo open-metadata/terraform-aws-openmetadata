@@ -31,7 +31,7 @@ resource "aws_opensearch_domain" "opensearch" {
     internal_user_database_enabled = true
     master_user_options {
       master_user_name     = var.opensearch.credentials.username
-      master_user_password = random_password.opensearch_password.result
+      master_user_password = local.opensearch_password
     }
   }
 
@@ -85,14 +85,33 @@ module "opensearch_sg" {
 
 # Search engine credentials
 
+# AWS OpenSearch requires at least one special character in the master password.
+# However, passwords that start with a special character break YAML parsing when
+# the OpenMetadata app embeds the secret value inline in openmetadata.yaml.
+# To satisfy both constraints, the password is built in two parts:
+#   1. A guaranteed uppercase letter prefix (always YAML-safe as first character)
+#   2. The rest of the password with specials limited to _ - . (also YAML-safe mid-value)
+# The two parts are joined in the local below.
+
+resource "random_string" "opensearch_password_prefix" {
+  length  = 1
+  upper   = true
+  lower   = false
+  numeric = false
+  special = false
+}
+
 resource "random_password" "opensearch_password" {
-  length           = 16
-  min_upper        = 1
+  length           = 23
   min_lower        = 1
   min_numeric      = 1
   min_special      = 1
   special          = true
   override_special = "_-."
+}
+
+locals {
+  opensearch_password = "${random_string.opensearch_password_prefix.result}${random_password.opensearch_password.result}"
 }
 
 resource "kubernetes_secret_v1" "opensearch_credentials" {
@@ -102,7 +121,7 @@ resource "kubernetes_secret_v1" "opensearch_credentials" {
   }
 
   data = {
-    (var.opensearch.credentials.password.secret_key) = random_password.opensearch_password.result
+    (var.opensearch.credentials.password.secret_key) = local.opensearch_password
   }
 }
 

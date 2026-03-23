@@ -121,7 +121,7 @@ variable "opensearch" {
     aws = {
       availability_zone_count = 2
       domain_name             = "openmetadata"
-      engine_version          = "OpenSearch_2.7"
+      engine_version          = "OpenSearch_3.3"
       instance_count          = 2
       instance_type           = "t3.small.search"
       tls_security_policy     = "Policy-Min-TLS-1-2-2019-07"

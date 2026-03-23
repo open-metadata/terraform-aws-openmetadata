@@ -22,3 +22,9 @@ output "db_instance_port" {
   description = "The database port"
   value       = module.rds.db_instance_port
 }
+
+output "db_password" {
+  description = "The master password for the RDS instance."
+  value       = random_password.db_password.result
+  sensitive   = true
+}

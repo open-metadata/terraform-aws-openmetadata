@@ -1,13 +1,11 @@
 # OpenMetadata Database resources
 
 resource "random_password" "db_password" {
-  length           = 16
-  min_upper        = 1
-  min_lower        = 1
-  min_numeric      = 1
-  min_special      = 1
-  special          = true
-  override_special = "#^&*()-_=+[]{}:?"
+  length      = 24
+  min_upper   = 1
+  min_lower   = 1
+  min_numeric = 1
+  special     = false
 }
 
 module "rds" {
