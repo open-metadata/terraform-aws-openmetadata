@@ -68,13 +68,6 @@ openmetadata:
         password:
           secretRef: ${db.credentials.password.secret_ref}
           secretKey: ${db.credentials.password.secret_key}
-      maxSize: 50
-      minSize: 10
-      initialSize: 10
-      checkConnectionWhileIdle: true
-      checkConnectionOnBorrow: true
-      evictionInterval: 5 minutes
-      minIdleTime: 1 minute
 %{ endif ~}
 %{ if airflow_provisioner == "none" ~}
 omjobOperator:
