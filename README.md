@@ -11,7 +11,7 @@ Using `helm` as provisioner for all components:
 ```hcl
 module "omd" {
   source  = "open-metadata/openmetadata/aws"
-  version = "1.12.1"
+  version = "1.12.3"
 
   # Namespace where OpenMetadata and dependencies will be deployed
   app_namespace    = "example"
@@ -73,7 +73,7 @@ Using `aws` as provisioner for all possible components:
 ```hcl
 module "omd" {
   source  = "open-metadata/openmetadata/aws"
-  version = "1.12.1"
+  version = "1.12.3"
 
   # Namespace where OpenMetadata and dependencies will be deployed
   app_namespace = "example"
@@ -119,7 +119,7 @@ Using `existing` as provisioner for all possible components:
 ```hcl
 module "omd" {
   source  = "open-metadata/openmetadata/aws"
-  version = "1.12.1"
+  version = "1.12.3"
 
   # Namespace where OpenMetadata and dependencies will be deployed
   app_namespace = "example"
@@ -172,7 +172,7 @@ Set `airflow.provisioner = "none"` to deploy OpenMetadata without Airflow. No Ai
 ```hcl
 module "omd" {
   source  = "open-metadata/openmetadata/aws"
-  version = "1.12.1"
+  version = "1.12.3"
 
   app_namespace    = "example"
   eks_nodes_sg_ids = ["sg-1234abcd5678efgh"]
@@ -216,7 +216,7 @@ You can add extra environment variables by using the parameter `extra_envs`:
 ```hcl
 module "omd" {
   source  = "open-metadata/openmetadata/aws"
-  version = "1.12.1"
+  version = "1.12.3"
 
   # Namespace where OpenMetadata and dependencies will be deployed
   app_namespace    = "example"
@@ -243,7 +243,7 @@ You can also add extra environment variables from Kubernetes secrets by using th
 ```hcl
 module "omd" {
   source  = "open-metadata/openmetadata/aws"
-  version = "1.12.1"
+  version = "1.12.3"
 
   # Namespace where OpenMetadata and dependencies will be deployed
   app_namespace    = "example"
@@ -278,7 +278,7 @@ Example — increase the OpenMetadata replica count and tune Airflow's scheduler
 ```hcl
 module "omd" {
   source  = "open-metadata/openmetadata/aws"
-  version = "1.12.1"
+  version = "1.12.3"
 
   app_namespace    = "example"
   eks_nodes_sg_ids = ["sg-1234abcd5678efgh"]
@@ -310,7 +310,7 @@ Then reference it via `airflow_helm_values`:
 ```hcl
 module "omd" {
   source  = "open-metadata/openmetadata/aws"
-  version = "1.12.1"
+  version = "1.12.3"
 
   app_namespace    = "example"
   eks_nodes_sg_ids = ["sg-1234abcd5678efgh"]
