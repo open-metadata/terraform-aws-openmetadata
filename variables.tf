@@ -190,10 +190,7 @@ variable "airflow" {
     }))
   })
   default = {
-    provisioner = "helm"
-    db = {
-      provisioner = "helm"
-    }
+    provisioner = "none"
   }
 }
 

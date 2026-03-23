@@ -5,7 +5,7 @@ locals {
   db_default_provisioner         = "helm"
   airflow_default_provisioner    = "helm"
   # If the Airflow provisioner is set to "existing", the Airflow database provisioner must be also set to "existing"
-  airflow_db_default_provisioner = var.airflow.provisioner == "existing" ? "existing" : (var.airflow.provisioner == "none" ? "none" : "helm")
+  airflow_db_default_provisioner = var.airflow.provisioner == "existing" ? "existing" : (var.airflow.provisioner == "helm" ? "helm" : "none")
 
   omd_defaults = {
     namespace          = var.app_namespace
