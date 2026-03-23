@@ -5,7 +5,7 @@ locals {
   db_default_provisioner         = "helm"
   airflow_default_provisioner    = "helm"
   # If the Airflow provisioner is set to "existing", the Airflow database provisioner must be also set to "existing"
-  airflow_db_default_provisioner = var.airflow.provisioner == "existing" ? "existing" : "helm"
+  airflow_db_default_provisioner = var.airflow.provisioner == "existing" ? "existing" : (var.airflow.provisioner == "none" ? "none" : "helm")
 
   omd_defaults = {
     namespace          = var.app_namespace
@@ -25,7 +25,7 @@ locals {
     aws = {
       availability_zone_count = 2
       domain_name             = "openmetadata"
-      engine_version          = "OpenSearch_2.7"
+      engine_version          = "OpenSearch_3.3"
       instance_count          = 2
       instance_type           = "t3.small.search"
       tls_security_policy     = "Policy-Min-TLS-1-2-2019-07"
@@ -115,7 +115,7 @@ locals {
   }
 
   airflow_helm_defaults = {
-    endpoint = "http://openmetadata-deps-web.${var.app_namespace}.svc:8080"
+    endpoint = "http://openmetadata-deps-api-server.${var.app_namespace}.svc:8080"
     credentials = {
       username = "admin"
       password = {

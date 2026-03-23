@@ -4,6 +4,12 @@ variable "helm_chart_version" {
   default     = null
 }
 
+variable "extra_helm_values" {
+  type        = map(string)
+  description = "Map of additional Helm set overrides. Keys are Helm value paths, values are strings."
+  default     = {}
+}
+
 variable "helm_values" {
   type        = any
   description = "Custom values to override the default values in the OpenMetadata Helm chart."

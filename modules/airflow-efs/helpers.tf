@@ -26,7 +26,7 @@ resource "kubernetes_job_v1" "efs_provision" {
           }
           command = [
             "sh", "-c",
-            "mkdir -p /efs/airflow-dags/$${DAGS_SUBPATH} /efs/airflow-logs/$${LOGS_SUBPATH}; chown -R 50000 /efs/airflow-dags/$${DAGS_SUBPATH} /efs/airflow-logs/$${LOGS_SUBPATH} && chmod -R a+rwx /efs/airflow-dags/$${DAGS_SUBPATH}"
+            "chown -R 50000 /efs/airflow-dags /efs/airflow-logs && chmod -R a+rwx /efs/airflow-dags"
           ]
           volume_mount {
             name       = "airflow-dags"

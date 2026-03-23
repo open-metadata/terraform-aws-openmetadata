@@ -28,35 +28,24 @@ opensearch:
 airflow:
   enabled: ${airflow_enabled}
 %{ if airflow_enabled ~}
-  airflow:
-    users:
-      - username: ${airflow.credentials.username}
-        password: $${ADMIN_PASSWORD}
-        role: Admin
-        email: spiderman@superhero.org
-        firstName: Peter
-        lastName: Parker
-    usersTemplates:
-        ADMIN_PASSWORD:
-          kind: secret
-          name: ${airflow.credentials.password.secret_ref}
-          key: ${airflow.credentials.password.secret_key}
-%{ if airflow_db_provisioner == "aws" || airflow_db_provisioner == "existing" ~}
-  externalDatabase:
-    passwordSecret: ${airflow.db.credentials.password.secret_ref}
-    passwordSecretKey: ${airflow.db.credentials.password.secret_key}
-    user: ${airflow.db.credentials.username}
-    type: ${airflow.db.engine.name}
-    host: ${omd_dependencies.airflow_db_host}
-    port: ${airflow.db.port}
-    database: ${airflow.db.db_name}
+  webserver:
+    defaultUser:
+      enabled: true
+      role: Admin
+      username: ${airflow.credentials.username}
+      email: spiderman@superhero.org
+      firstName: Peter
+      lastName: Parker
+      password: ${jsonencode(airflow_admin_password)}
+%{ if airflow_db_provisioner == "aws" ~}
+  data:
+    metadataSecretName: ${airflow_db_connection_secret_name}
 %{ endif ~}
   logs:
     persistence:
       enabled: true
-      storageClass: "efs-logs"
+      storageClassName: "efs-logs"
       existingClaim: ${airflow.pvc.logs}
-      subPath: ${airflow.subpath.logs}
 %{ if airflow.logs_cleanup.enabled ~}
       cleanup:
         enabled: true
@@ -66,7 +55,14 @@ airflow:
   dags:
     persistence:
       enabled: true
-      storageClass: "efs-dags"
+      storageClassName: "efs-dags"
       existingClaim: ${airflow.pvc.dags}
-      subPath: ${airflow.subpath.dags}
+  apiServer:
+    extraVolumes:
+      - name: dags
+        persistentVolumeClaim:
+          claimName: ${airflow.pvc.dags}
+    extraVolumeMounts:
+      - name: dags
+        mountPath: /opt/airflow/dags
 %{ endif ~}

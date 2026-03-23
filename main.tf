@@ -6,6 +6,7 @@ module "deployment" {
   namespace          = local.omd.namespace
   helm_chart_version = local.omd.helm_chart_version
   helm_values        = local.omd_template_vars
+  extra_helm_values  = local.omd_extra_helm_values
 }
 
 # OpenMetadata dependencies
@@ -16,6 +17,7 @@ module "openmetadata_deps" {
   namespace          = local.omd.namespace
   helm_chart_version = local.omd.helm_chart_version
   helm_values        = local.omd_dependencies_template_vars
+  extra_helm_values  = local.omd_deps_extra_helm_values
 }
 
 # OpenMetadata RDS instance (optional)

@@ -34,6 +34,7 @@ locals {
     helm     = local.shared_db_helm_config
     aws      = local.airflow_db_aws_config
     existing = local.airflow_db_existing_config
+    none     = null
   }
 
   airflow_db = local.airflow_db_config[local.airflow_db_provisioner]

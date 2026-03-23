@@ -4,6 +4,30 @@ variable "app_helm_chart_version" {
   default     = null
 }
 
+variable "airflow_helm_values" {
+  type        = map(string)
+  description = "Map of additional Helm values for the Airflow component in the OpenMetadata dependencies chart. Keys are relative to the 'airflow' key (e.g. 'executor' sets 'airflow.executor')."
+  default     = {}
+}
+
+variable "mysql_helm_values" {
+  type        = map(string)
+  description = "Map of additional Helm values for the MySQL component in the OpenMetadata dependencies chart. Keys are relative to the 'mysql' key (e.g. 'primary.persistence.size' sets 'mysql.primary.persistence.size')."
+  default     = {}
+}
+
+variable "opensearch_helm_values" {
+  type        = map(string)
+  description = "Map of additional Helm values for the OpenSearch component in the OpenMetadata dependencies chart. Keys are relative to the 'opensearch' key (e.g. 'resources.limits.memory' sets 'opensearch.resources.limits.memory')."
+  default     = {}
+}
+
+variable "openmetadata_helm_values" {
+  type        = map(string)
+  description = "Map of additional Helm values to pass to the OpenMetadata chart as set overrides. Keys are Helm value paths (e.g. 'openmetadata.config.pipelineServiceClientConfig.type') and values are strings. Use this to configure any chart parameter not exposed as a Terraform variable (e.g. pipeline service client type, k8s pipeline client, omjobOperator, route)."
+  default     = {}
+}
+
 variable "app_namespace" {
   type        = string
   default     = "openmetadata"
@@ -13,7 +37,7 @@ variable "app_namespace" {
 variable "app_version" {
   type        = string
   description = "OpenMetadata version to deploy."
-  default     = "1.11.10"
+  default     = "1.12.1"
 }
 
 variable "docker_image_name" {
@@ -154,7 +178,7 @@ variable "airflow" {
       storage_size = optional(number) # Size of the Airflow database storage in GB
     }))
     endpoint    = optional(string)   # Endpoint URL for the Airflow instance
-    provisioner = optional(string)   # One of 'helm' or 'existing'
+    provisioner = optional(string)   # One of 'helm', 'existing', or 'none'
     logs_cleanup = optional(object({ # Airflow logs cleanup configuration
       enabled     = optional(bool)   # Whether to enable log cleanup
       schedule    = optional(string) # Schedule for log cleanup

@@ -35,6 +35,7 @@ locals {
   airflow_config = {
     helm     = local.airflow_helm_config
     existing = local.airflow_existing_config
+    none     = null
   }
 
   airflow = local.airflow_config[local.airflow_provisioner]

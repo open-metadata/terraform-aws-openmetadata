@@ -12,4 +12,6 @@ resource "helm_release" "openmetadata_deps" {
   namespace  = var.namespace
   wait       = false
   values     = local.template
+
+  set = [for k, v in var.extra_helm_values : { name = k, value = v }]
 }
