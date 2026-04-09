@@ -4,7 +4,6 @@ module "app" {
   source  = "open-metadata/openmetadata/aws"
   version = "1.12.5"
 
-  airflow  = var.airflow
   env_from = local.env_from
   extra_envs = {
     "ELASTICSEARCH_BATCH_SIZE" = 250

@@ -6,7 +6,7 @@ The following examples show how to use the module with different provisioners. E
 
 ## Helm - for testing
 
-Using `helm` as provisioner for all components:
+Using `helm` as provisioner for all components without Airflow:
 
 ```hcl
 module "omd" {
@@ -16,17 +16,43 @@ module "omd" {
   # Namespace where OpenMetadata and dependencies will be deployed
   app_namespace    = "example"
 
-  # Security group IDs assigned to the EKS nodes, required for the Airflow's EFS security groups
+  # Security group IDs assigned to the EKS nodes
   eks_nodes_sg_ids = ["sg-1234abcd5678efgh"]
 
-  # Subnet IDs, required for the Airflow's EFS mount targets
+  # Subnet IDs for the RDS instances and OpenSearch domain
   subnet_ids       = ["subnet-1a2b3c4d", "subnet-5e6f7g8h", "subnet-9i0j1k2l"]
 
-  # VPC ID for the security groups of the EFS volumes
+  # VPC ID for the security groups
   vpc_id = "vpc-1a2b3c4d"
 
 }
 ```
+
+Using `helm` as provisioner for all components including Airflow:
+
+```hcl
+module "omd" {
+  source  = "open-metadata/openmetadata/aws"
+  version = "1.12.5"
+
+  # Namespace where OpenMetadata and dependencies will be deployed
+  app_namespace    = "example"
+
+  # Security group IDs assigned to the EKS nodes
+  eks_nodes_sg_ids = ["sg-1234abcd5678efgh"]
+
+  # Subnet IDs for the RDS instances and OpenSearch domain
+  subnet_ids       = ["subnet-1a2b3c4d", "subnet-5e6f7g8h", "subnet-9i0j1k2l"]
+
+  # VPC ID for the security groups
+  vpc_id = "vpc-1a2b3c4d"
+
+  airflow = {
+    provisioner = "helm"
+  }
+}
+```
+
 
 ## Accessing OpenMetadata
 
@@ -54,8 +80,8 @@ This module enables you to choose from multiple provisioners to deploy the compo
 | :-------------------------- | :---: | :---: |  :---:  | :--: | :-----------------: |
 | **OpenMetadata**            |  ✅   |  🟥   |    🟥   |  🟥  |      Helm           |
 | **OpenMetadata database**   |  ✅   |  ✅   |    ✅   |  🟥  |      Helm           |
-| **Airflow**                 |  ✅   |  🟥   |    ✅   |  ✅  |      Helm           |
-| **Airflow database**        |  ✅   |  ✅   |    ✅   |  🟥  |      Helm           |
+| **Airflow**                 |  ✅   |  🟥   |    ✅   |  ✅  |      None           |
+| **Airflow database**        |  ✅   |  ✅   |    ✅   |  🟥  |      None           |
 | **OpenSearch**              |  ✅   |  ✅   |    ✅   |  🟥  |      Helm           |
 
 > [!NOTE]
@@ -68,7 +94,47 @@ This module enables you to choose from multiple provisioners to deploy the compo
 
 ## AWS - production ready
 
-Using `aws` as provisioner for all possible components:
+### Without Airflow
+
+The default production setup uses the OMJob operator for ingestion instead of Airflow. This option is using `aws` as provisioner for all possible components except Airflow:
+
+```hcl
+module "omd" {
+  source  = "open-metadata/openmetadata/aws"
+  version = "1.12.5"
+
+  # Namespace where OpenMetadata and dependencies will be deployed
+  app_namespace = "example"
+
+  # Security group IDs assigned to the EKS nodes, the RDS instances and OpenSearch domain will allow inbound traffic from them
+  eks_nodes_sg_ids = ["sg-1234abcd5678efgh", "sg-8765ijkl4321mnop"]
+
+  # ARN of the KMS key used to encrypt resources
+  kms_key_id = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
+
+  # Subnet IDs, used for:
+  # the subnet group for the RDS instances
+  # the OpenSearch domain
+  subnet_ids = ["subnet-1a2b3c4d", "subnet-5e6f7g8h", "subnet-9i0j1k2l"]
+
+  # VPC ID for the security groups of the RDS instances and the OpenSearch domain
+  vpc_id = "vpc-1a2b3c4d"
+
+  # OpenMetadata database settings
+  db = {
+    provisioner = "aws"
+  }
+
+  # OpenSearch settings
+  opensearch = {
+    provisioner = "aws"
+  }
+}
+```
+
+### With Airflow
+
+Using `aws` as provisioner for all possible components, including Airflow:
 
 ```hcl
 module "omd" {
@@ -81,7 +147,7 @@ module "omd" {
   # Security group IDs assigned to the EKS nodes, the RDS instances, EFS volumes, and OpenSearch domain will allow inbound traffic from them
   eks_nodes_sg_ids = ["sg-1234abcd5678efgh", "sg-8765ijkl4321mnop"]
 
-  # ARN of the KMS key used to encrypt resources 
+  # ARN of the KMS key used to encrypt resources
   kms_key_id = "arn:aws:kms:us-east-1:123456789012:key/12345678-1234-1234-1234-123456789012"
 
   # Subnet IDs, used for:
@@ -100,6 +166,7 @@ module "omd" {
 
   # Airflow settings
   airflow = {
+    provisioner = "helm"
     db = {
       provisioner = "aws"
     }
@@ -165,9 +232,9 @@ module "omd" {
 }
 ```
 
-## Without Airflow — using the OMJob operator
+## Without Airflow - using the OMJob operator
 
-Set `airflow.provisioner = "none"` to deploy OpenMetadata without Airflow. No Airflow instance, EFS volumes, or Airflow database will be created. OpenMetadata will be configured to use Kubernetes Jobs for ingestion, managed by the OMJob operator:
+This is the default option. No Airflow instance, EFS volumes, or Airflow database will be created. OpenMetadata will be configured to use Kubernetes Jobs for ingestion, managed by the `OMJob operator`:
 
 ```hcl
 module "omd" {
@@ -178,10 +245,6 @@ module "omd" {
   eks_nodes_sg_ids = ["sg-1234abcd5678efgh"]
   subnet_ids       = ["subnet-1a2b3c4d", "subnet-5e6f7g8h", "subnet-9i0j1k2l"]
   vpc_id           = "vpc-1a2b3c4d"
-
-  airflow = {
-    provisioner = "none"
-  }
 }
 ```
 
@@ -221,13 +284,13 @@ module "omd" {
   # Namespace where OpenMetadata and dependencies will be deployed
   app_namespace    = "example"
 
-  # Security group IDs assigned to the EKS nodes, required for the Airflow's EFS security groups
+  # Security group IDs assigned to the EKS nodes
   eks_nodes_sg_ids = ["sg-1234abcd5678efgh"]
 
-  # Subnet IDs, required for the Airflow's EFS mount targets
+  # Subnet IDs for the RDS instances and OpenSearch domain
   subnet_ids       = ["subnet-1a2b3c4d", "subnet-5e6f7g8h", "subnet-9i0j1k2l"]
 
-  # VPC ID for the security groups of the EFS volumes
+  # VPC ID for the security groups
   vpc_id = "vpc-1a2b3c4d"
 
   # Extra environment variables for the OpenMetadata pod
@@ -248,13 +311,13 @@ module "omd" {
   # Namespace where OpenMetadata and dependencies will be deployed
   app_namespace    = "example"
 
-  # Security group IDs assigned to the EKS nodes, required for the Airflow's EFS security groups
+  # Security group IDs assigned to the EKS nodes
   eks_nodes_sg_ids = ["sg-1234abcd5678efgh"]
 
-  # Subnet IDs, required for the Airflow's EFS mount targets
+  # Subnet IDs for the RDS instances and OpenSearch domain
   subnet_ids       = ["subnet-1a2b3c4d", "subnet-5e6f7g8h", "subnet-9i0j1k2l"]
 
-  # VPC ID for the security groups of the EFS volumes
+  # VPC ID for the security groups
   vpc_id = "vpc-1a2b3c4d"
 
   # Extra environment variables for the OpenMetadata pod from Kubernetes secrets
