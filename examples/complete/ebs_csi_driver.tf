@@ -3,7 +3,7 @@
 resource "aws_eks_addon" "ebs_csi_driver" {
   cluster_name                = local.eks_cluster_name
   addon_name                  = "aws-ebs-csi-driver"
-  service_account_role_arn    = module.ebs_csi_irsa.iam_role_arn
+  service_account_role_arn    = module.ebs_csi_irsa.arn
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
   depends_on = [
@@ -13,9 +13,10 @@ resource "aws_eks_addon" "ebs_csi_driver" {
 }
 
 module "ebs_csi_irsa" {
-  source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts"
+  version = "~> 6.0"
 
-  role_name             = "ebs-csi"
+  name                  = "ebs-csi"
   attach_ebs_csi_policy = true
 
   oidc_providers = {
