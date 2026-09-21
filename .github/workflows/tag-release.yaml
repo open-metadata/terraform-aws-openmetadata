@@ -1,0 +1,68 @@
+---
+name: Tag & release from branch
+run-name: Tag & release from ${{ inputs.release_branch_name }}
+description: Create a tag and GitHub release from a release branch (dispatched by release-automation)
+# yamllint disable-line rule:truthy
+on:
+  workflow_dispatch:
+    inputs:
+      release_branch_name:
+        description: "Release branch to tag and release from (e.g. release/2.0.1)"
+        required: true
+permissions:
+  contents: write
+jobs:
+  create_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout release branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.release_branch_name }}
+          fetch-depth: 0
+      - name: Get the version
+        id: get_version
+        run: |
+          NEW_TAG=$(cat .version)
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0)
+          echo "NEW_TAG=${NEW_TAG}" >> ${GITHUB_ENV}
+          echo "PREVIOUS_TAG=${PREVIOUS_TAG}" >> ${GITHUB_ENV}
+      - name: Create the new tag
+        id: create_tag
+        run: |
+          if git rev-parse "refs/tags/${{ env.NEW_TAG }}" >/dev/null 2>&1; then
+            echo "::error::Tag ${{ env.NEW_TAG }} already exists."
+            exit 1
+          fi
+          git config --global user.email "release-bot@open-metadata.org"
+          git config --global user.name "OpenMetadata Release Bot"
+          git tag -a ${{ env.NEW_TAG }} -m "Release version ${{ env.NEW_TAG }}"
+          git push origin ${{ env.NEW_TAG }}
+      - name: Create the release body
+        id: create_release_body
+        run: |
+          function create_release_body() {
+            if [[ $# -ne 2 ]]; then
+              echo "Usage: create_release_body <previous_tag> <new_tag>"
+              return 1
+            fi
+            local PREVIOUS_TAG=${1}
+            local NEW_TAG=${2}
+            local DATE=$(date +%Y-%m-%d)
+            local RELEASE_BODY_FILE="/tmp/body.md"
+            local REPO_URL="https://github.com/${{ github.repository }}"
+            cat > ${RELEASE_BODY_FILE} <<-EOF
+          ## [${NEW_TAG}](${REPO_URL}/compare/${PREVIOUS_TAG}...${NEW_TAG}) (${DATE})
+
+          ### Features
+          * Bump OpenMetadata version to ${NEW_TAG}
+          EOF
+            cat ${RELEASE_BODY_FILE}
+            echo "RELEASE_BODY_FILE=${RELEASE_BODY_FILE}" >> ${GITHUB_ENV}
+          }
+          create_release_body "${{ env.PREVIOUS_TAG}}" "${{ env.NEW_TAG }}"
+      - name: Create the new release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.NEW_TAG }}
+          body_path: ${{ env.RELEASE_BODY_FILE }}
