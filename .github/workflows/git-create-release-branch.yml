@@ -56,7 +56,13 @@ jobs:
         env:
           NEW_VERSION: ${{ inputs.mode == 'commit-version-bump' && inputs.version || inputs.release_branch_name }}
         run: |
-          sed -i "s/$(cat .version)/${NEW_VERSION}/g" README_terraform.md README.md variables.tf examples/*/variables.tf examples/*/main.tf .version
+          set -euo pipefail
+          OLD_RE=$(printf '%s' "$(cat .version)" | sed 's/\./\\./g')
+          echo "$NEW_VERSION" > .version
+          # Only exact quoted occurrences — a bare 's/$OLD/$NEW/g' mangles unrelated
+          # values when the old version is two-segment: 2.0 also matches 250,
+          # "Sat:02:00" and '~> 2.0' provider pins.
+          sed -i "s/\"${OLD_RE}\"/\"${NEW_VERSION}\"/g" README_terraform.md README.md variables.tf examples/*/variables.tf examples/*/main.tf
       - name: Commit version bump
         if: ${{ inputs.mode == 'commit-version-bump' }}
         env:
