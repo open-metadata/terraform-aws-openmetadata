@@ -12,7 +12,7 @@ mysql:
 %{ endif ~}
 
 # OpenSearch settings
-# Find more details: https://github.com/opensearch-project/helm-charts/tree/opensearch-2.12.1/charts/opensearch
+# Find more details: https://github.com/opensearch-project/helm-charts/tree/opensearch-3.5.0/charts/opensearch
 opensearch:
   enabled: ${opensearch_enabled}
 %{ if opensearch_provisioner == "helm" ~}
