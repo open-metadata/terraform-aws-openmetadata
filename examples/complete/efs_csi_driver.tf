@@ -4,7 +4,7 @@
 resource "aws_eks_addon" "efs_csi_driver" {
   cluster_name             = local.eks_cluster_name
   addon_name               = "aws-efs-csi-driver"
-  service_account_role_arn = module.efs_csi_irsa.iam_role_arn
+  service_account_role_arn = module.efs_csi_irsa.arn
   depends_on = [
     module.efs_csi_irsa,
     aws_eks_node_group.nodes
@@ -12,9 +12,10 @@ resource "aws_eks_addon" "efs_csi_driver" {
 }
 
 module "efs_csi_irsa" {
-  source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts"
+  version = "~> 6.0"
 
-  role_name             = "efs-csi"
+  name                  = "efs-csi"
   attach_efs_csi_policy = true
 
   oidc_providers = {
